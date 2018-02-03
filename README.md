@@ -24,3 +24,7 @@ For Python dependencies, see requirements.txt
 * `txtcmds/` - file contents for the fake commands
 * `bin/createfs` - used to create the fake filesystem
 * `bin/playlog` - utility to replay session logs
+
+## How to run
+* `bin/irassh start` - start the server
+* `bin/irassh stop` - stop the server
