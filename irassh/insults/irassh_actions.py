@@ -86,8 +86,6 @@ class ActionFactory(object):
 
     def getAction(self, cmd, clientIp):
         action = random.randrange(0, 4)
-        if action == 1:
-            return FakeAction(cmd, self.write)
         if action == 0:
             return AllowAction(self.write)
         elif action == 1:
