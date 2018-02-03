@@ -15,16 +15,16 @@ class IRasshDao:
         host = cfg.get('output_mysql', 'host')
         db = cfg.get('output_mysql', 'database')
         user = cfg.get('output_mysql', 'username')
-        passwd = cfg.get('output_mysql', 'password')
-        self.connection = MySQLdb.connect(host=host, user=user, passwd=passwd, db=db, port=port,
+        pwd = cfg.get('output_mysql', 'password')
+        self.connection = MySQLdb.connect(host=host, user=user, passwd=pwd, db=db, port=port,
                                           cursorclass=MySQLdb.cursors.DictCursor)
 
-    def getCommands(self):
+    def get_commands(self):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM commands")
         return cursor
 
-    def getFakeOutput(self, cmd):
+    def get_fake_output(self, cmd):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM fake_commands WHERE command=%s", (cmd))
         for record in cursor:
@@ -32,7 +32,7 @@ class IRasshDao:
 
         return None
 
-    def saveCase(self, case):
+    def save_case(self, case):
         cursor = self.connection.cursor()
 
         initial_cmd = case["initial_cmd"]
@@ -44,20 +44,20 @@ class IRasshDao:
                 initial_cmd,
                 case["action"],
                 next_cmd,
-                self.getProfile(initial_cmd),
+                self.get_profile(initial_cmd),
                 str(irassh.core.constants.rl_params)
             )
         )
         self.connection.commit()
 
-    def getProfile(self, cmd):
+    def get_profile(self, cmd):
         cursor = self.connection.cursor()
         cursor.execute("SELECT prof_type FROM commands WHERE command=%s", (cmd))
         for record in cursor:
             return record["prof_type"]
         return ""
 
-    def getInsultMsg(self, loc):
+    def get_insult_msg(self, loc):
         cursor = self.connection.cursor()
         cursor.execute("SELECT message FROM messages WHERE country=%s", (loc,))
         for record in cursor:
@@ -67,11 +67,6 @@ class IRasshDao:
         cursor.execute("SELECT message FROM messages WHERE country=%s", ('DEFAULT',))
         for record in cursor:
             return record["message"].strip()
-
-    def getCases(self):
-        cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM cases ORDER BY id")
-        return cursor
 
 
 irasshDao = None

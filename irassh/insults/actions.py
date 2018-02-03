@@ -1,28 +1,35 @@
 import time
-import pygeoip,os
+
+import os
+import pygeoip
+
 from irassh.insults.dao import *
+
 
 class Action(object):
     def __init__(self, write):
+        self.isAllowed = True
         self.write = write
 
     def process(self):
         self.log(None)
-        self.isAllowed = True
 
-    def isPass(self):
+    def is_pass(self):
         return self.isAllowed
 
     def log(self, case):
-        getIRasshDao().saveCase(case)
+        getIRasshDao().save_case(case)
 
     def write(self, text):
         self.write(text)
 
 
 class BlockedAction(Action):
-    def process(self):
+    def __init__(self, write):
+        super(BlockedAction, self).__init__(write)
         self.isAllowed = False
+
+    def process(self):
         self.write("Blocked command!\n")
 
 
@@ -47,15 +54,15 @@ class InsultAction(Action):
     def process(self):
         self.isAllowed = False
 
-        location = self.getCountryCode()
+        location = self.get_country_code()
         self.write("Insult Message! IP= %s/location=%s\n" % (self.clientIp, location))
-        self.write(getIRasshDao().getInsultMsg(location))
+        self.write(getIRasshDao().get_insult_msg(location))
 
-    def getCountryCode(self):
-        path,file = os.path.split(__file__)
-        fileName = os.path.join(path, "GeoIP.dat")
-        geoIp = pygeoip.GeoIP(fileName)
-        return geoIp.country_code_by_addr(self.clientIp)
+    def get_country_code(self):
+        path, file = os.path.split(__file__)
+        file_name = os.path.join(path, "GeoIP.dat")
+        geo_ip = pygeoip.GeoIP(file_name)
+        return geo_ip.country_code_by_addr(self.clientIp)
 
 
 class FakeAction(Action):
@@ -67,20 +74,22 @@ class FakeAction(Action):
     def process(self):
         self.isAllowed = False
 
-        fakeOutput = getIRasshDao().getFakeOutput(self.command)
-        if fakeOutput is not None:
-            self.write(fakeOutput + "\n")
+        fake_output = getIRasshDao().get_fake_output(self.command)
+        if fake_output is not None:
+            self.write(fake_output + "\n")
 
 
 class ActionFactory():
-    def getAction(self):
+    def __init__(self):
+        pass
+
+    def get_action(self):
         return Action
 
 
 class ActionValidator(object):
     def validate(self):
-        action = ActionFactory.getAction(self)
+        action = ActionFactory.get_action(self)
         action.log(None)
         action.process(self)
-        return action.isPass(self)
-
+        return action.is_pass(self)
