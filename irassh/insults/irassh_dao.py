@@ -19,12 +19,12 @@ class IRasshDao:
         self.connection = MySQLdb.connect(host=host, user=user, passwd=pwd, db=db, port=port,
                                           cursorclass=MySQLdb.cursors.DictCursor)
 
-    def get_commands(self):
+    def getCommands(self):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM commands")
         return cursor
 
-    def get_fake_output(self, cmd):
+    def getFakeOutput(self, cmd):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM fake_commands WHERE command=%s", (cmd))
         for record in cursor:
@@ -32,7 +32,7 @@ class IRasshDao:
 
         return None
 
-    def save_case(self, case):
+    def saveCase(self, case):
         cursor = self.connection.cursor()
 
         initial_cmd = case["initial_cmd"]
@@ -44,20 +44,20 @@ class IRasshDao:
                 initial_cmd,
                 case["action"],
                 next_cmd,
-                self.get_profile(initial_cmd),
+                self.getProfile(initial_cmd),
                 str(irassh.core.constants.rl_params)
             )
         )
         self.connection.commit()
 
-    def get_profile(self, cmd):
+    def getProfile(self, cmd):
         cursor = self.connection.cursor()
         cursor.execute("SELECT prof_type FROM commands WHERE command=%s", (cmd))
         for record in cursor:
             return record["prof_type"]
         return ""
 
-    def get_insult_msg(self, loc):
+    def getInsultMsg(self, loc):
         cursor = self.connection.cursor()
         cursor.execute("SELECT message FROM messages WHERE country=%s", (loc,))
         for record in cursor:

@@ -17,6 +17,7 @@ from twisted.conch.ssh import session
 
 from irassh.shell import protocol
 from irassh.insults import insults
+from irassh.insults import irassh_actions
 
 
 @implementer(ISession)
@@ -39,6 +40,7 @@ class SSHSessionForCowrieUser(object):
         self.uid = avatar.uid
         self.gid = avatar.gid
         self.username = avatar.username
+        self.current_irassh_case = {}
         self.environ = {
             'LOGNAME': self.username,
             'SHELL': '/bin/bash',
@@ -70,10 +72,12 @@ class SSHSessionForCowrieUser(object):
         self.windowSize = windowSize
         return None
 
-
     def execCommand(self, processprotocol, cmd):
         """
         """
+        irassh_actions.CasePersister().log(cmd)
+        irassh_actions.CasePersister().saveState(self.current_irassh_case, cmd)
+
         self.protocol = insults.LoggingServerProtocol(
             protocol.HoneyPotExecProtocol, self, cmd)
         self.protocol.makeConnection(processprotocol)

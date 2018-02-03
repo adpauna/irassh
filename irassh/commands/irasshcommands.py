@@ -23,7 +23,7 @@ class ProxyCommand(HoneyPotCommand):
 
 class FakeCommand(HoneyPotCommand):
     def call(self):
-        fakeOuput = getIRasshDao().get_fake_output(self.protocol.cwd)
+        fakeOuput = getIRasshDao().getFakeOutput(self.protocol.cwd)
         if fakeOuput is not None:
             self.write(fakeOuput + "\n")
 
@@ -32,7 +32,7 @@ commands['lsp'] = ProxyCommand
 commands["cpp"] = ProxyCommand
 commands["catp"] = ProxyCommand
 
-supportedCommands = getIRasshDao().get_commands()
+supportedCommands = getIRasshDao().getCommands()
 for command in supportedCommands:
     if command["impl_type"] == 1:
         commands[command["command"]] = ProxyCommand
