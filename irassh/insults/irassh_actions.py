@@ -1,3 +1,4 @@
+import random
 import time
 
 import os
@@ -52,11 +53,11 @@ class InsultAction(Action):
     def process(self):
         super.is_allowed = False
 
-        location = self.get_country_code()
+        location = self.getCountryCode()
         self.write("Insult Message! IP= %s/location=%s\n" % (self.clientIp, location))
         self.write(irassh_dao.getIRasshDao().getInsultMsg(location))
 
-    def get_country_code(self):
+    def getCountryCode(self):
         path, file = os.path.split(__file__)
         file_name = os.path.join(path, "GeoIP.dat")
         geo_ip = pygeoip.GeoIP(file_name)
@@ -64,8 +65,8 @@ class InsultAction(Action):
 
 
 class FakeAction(Action):
-    def __init__(self, command, terminal):
-        super(FakeAction, self).__init__(terminal)
+    def __init__(self, command, write):
+        super(FakeAction, self).__init__(write)
 
         self.command = command
 
@@ -77,19 +78,37 @@ class FakeAction(Action):
             self.write(fake_output + "\n")
 
 
-class ActionFactory():
-    def __init__(self):
+class ActionFactory(object):
+
+    def __init__(self, write):
+        self.write = write
         pass
 
-    def getAction(self):
-        return Action
+    def getAction(self, cmd, clientIp):
+        action = random.randrange(0, 4)
+        if action == 1:
+            return FakeAction(cmd, self.write)
+        if action == 0:
+            return AllowAction(self.write)
+        elif action == 1:
+            return DelayAction(self.write)
+        elif action == 2:
+            return FakeAction(cmd, self.write)
+        elif action == 3:
+            return InsultAction(clientIp, self.write)
+        elif action == 4:
+            return BlockedAction(self.write)
 
 
 class ActionValidator(object):
-    def validate(self):
-        action = ActionFactory.getAction(self)
-        action.process(self)
-        return action.is_pass(self)
+    def __init__(self, write):
+        self.write = write
+        pass
+
+    def validate(self, cmd, clientIp):
+        action = ActionFactory(self.write).getAction(cmd, clientIp)
+        action.process()
+        return action.is_pass()
 
 
 class CasePersister(object):
