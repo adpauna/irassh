@@ -402,9 +402,9 @@ logfile = log/irassh.json
 # Format can be:
 # text, cef
 #
-#[output_textlog]
-#logfile = log/audit.log
-#format = text
+[output_textlog]
+logfile = log/audit.log
+format = text
 
 
 # MySQL logging module
@@ -413,13 +413,13 @@ logfile = log/irassh.json
 # MySQL logging requires extra software: sudo apt-get install libmysqlclient-dev
 # MySQL logging requires an extra Python module: pip install mysql-python
 #
-#[output_mysql]
-#host = localhost
-#database = irassh
-#username = irassh
-#password = secret
-#port = 3306
-#debug = false
+[output_mysql]
+host = localhost
+database = irassh
+username = root
+password = root
+port = 3306
+debug = false
 
 # Rethinkdb output module
 # Rethinkdb output module requires extra Python module: pip install rethinkdb

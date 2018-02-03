@@ -17,6 +17,7 @@ import sys
 from twisted.python import log, failure
 from twisted.internet import error
 
+from irassh.insults.actions import ActionValidator
 from irassh.shell import fs
 
 # From Python3.6 we get the new shlex version
@@ -367,7 +368,8 @@ class HoneyPotShell(object):
                 log.msg(eventid='irassh.command.failed', input=' '.join(cmd2), format='Command not found: %(input)s')
                 self.protocol.terminal.write('bash: {}: command not found\n'.format(cmd['command']))
                 runOrPrompt()
-        if pp:
+
+        if pp and ActionValidator.validate():
             self.protocol.call_command(pp, cmdclass, *cmd_array[0]['rargs'])
 
 
