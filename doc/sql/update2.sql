@@ -1,3 +1,5 @@
+USE irassh;
+
 --
 -- WARNING: Existing data may be lost & messed up
 --

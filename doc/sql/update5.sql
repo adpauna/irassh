@@ -1,3 +1,5 @@
+USE irassh;
+
 /* For the asynchronous mysql code, change session to use a 32 character
  * string instead of int(11) */
 

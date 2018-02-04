@@ -1,3 +1,5 @@
+USE irassh;
+
 create table commands(
     id			int auto_increment primary key,
     command		text,

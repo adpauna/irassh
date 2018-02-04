@@ -1,3 +1,5 @@
+USE irassh;
+
 CREATE TABLE IF NOT EXISTS `auth` (
   `id` INTEGER PRIMARY KEY,
   `session` char(32) NOT NULL,
