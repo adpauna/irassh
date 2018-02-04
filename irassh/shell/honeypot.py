@@ -366,7 +366,7 @@ class HoneyPotShell(object):
                     lastpp = pp
             else:
                 log.msg(eventid='irassh.command.failed', input=' '.join(cmd2), format='Command not found: %(input)s')
-                self.protocol.termkinal.write('bash: {}: command not found\n'.format(cmd['command']))
+                self.protocol.terminal.write('bash: {}: command not found\n'.format(cmd['command']))
                 runOrPrompt()
 
         if pp:
