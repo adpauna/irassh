@@ -16,8 +16,11 @@ class Action(object):
         """
         """
 
-    def is_pass(self):
+    def isPassed(self):
         return self.is_allowed
+
+    def setPassed(self, passed):
+        self.passed = passed
 
     def write(self, text):
         self.write(text)
@@ -26,7 +29,8 @@ class Action(object):
 class BlockedAction(Action):
     def __init__(self, write):
         super(BlockedAction, self).__init__(write)
-        super.is_allowed = False
+
+        self.setPassed(False)
 
     def process(self):
         self.write("Blocked command!\n")
@@ -35,13 +39,13 @@ class BlockedAction(Action):
 class DelayAction(Action):
     def process(self):
         time.sleep(3)
-        super.is_allowed = True
+        self.setPassed(True)
         self.write("delay ...\n")
 
 
 class AllowAction(Action):
     def process(self):
-        super.is_allowed = True
+        self.setPassed(True)
 
 
 class InsultAction(Action):
@@ -49,9 +53,9 @@ class InsultAction(Action):
         super(InsultAction, self).__init__(write)
 
         self.clientIp = clientIp
+        self.setPassed(False)
 
     def process(self):
-        super.is_allowed = False
 
         location = self.getCountryCode()
         self.write("Insult Message! IP= %s/location=%s\n" % (self.clientIp, location))
@@ -69,9 +73,9 @@ class FakeAction(Action):
         super(FakeAction, self).__init__(write)
 
         self.command = command
+        self.setPassed(False)
 
     def process(self):
-        super.is_allowed = False
 
         fake_output = irassh_dao.getIRasshDao().getFakeOutput(self.command)
         if fake_output is not None:
@@ -106,7 +110,7 @@ class ActionValidator(object):
     def validate(self, cmd, clientIp):
         action = ActionFactory(self.write).getAction(cmd, clientIp)
         action.process()
-        return action.is_pass()
+        return action.isPassed()
 
 
 class CasePersister(object):
