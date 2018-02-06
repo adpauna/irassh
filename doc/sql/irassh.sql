@@ -22,3 +22,12 @@ create table cases(
     rl_params       text,
     next_cmd		text
 );
+
+CREATE TABLE `messages` (
+  `id` int(4) NOT NULL auto_increment,
+  `message` varchar(250) NOT NULL,
+  `country` varchar(12) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ;
+
+INSERT INTO messages(message, country) VALUES ('This is default msg', 'DEFAULT');

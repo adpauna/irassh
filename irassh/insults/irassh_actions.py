@@ -59,11 +59,12 @@ class InsultAction(Action):
 
         location = self.getCountryCode()
         self.write("Insult Message! IP= %s/location=%s\n" % (self.clientIp, location))
-        self.write(irassh_dao.getIRasshDao().getInsultMsg(location))
+        self.write(irassh_dao.getIRasshDao().getInsultMsg(location) + "\n")
 
     def getCountryCode(self):
         path, file = os.path.split(__file__)
         file_name = os.path.join(path, "GeoIP.dat")
+        print("Load GeoIP.dat from " + file_name)
         geo_ip = pygeoip.GeoIP(file_name)
         return geo_ip.country_code_by_addr(self.clientIp)
 
@@ -119,6 +120,10 @@ class CasePersister(object):
             irassh_dao.getIRasshDao().saveCase(case)
 
     def saveState(self, case, cmd):
+
         if "initial_cmd" in case.keys():
+            print("Save next_cmd: " + cmd)
             case["next_cmd"] = cmd
+
+        print("Save initial_cmd: " + cmd)
         case["initial_cmd"] = cmd

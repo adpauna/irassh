@@ -40,7 +40,6 @@ class SSHSessionForCowrieUser(object):
         self.uid = avatar.uid
         self.gid = avatar.gid
         self.username = avatar.username
-        self.current_irassh_case = {}
         self.environ = {
             'LOGNAME': self.username,
             'SHELL': '/bin/bash',
@@ -75,9 +74,6 @@ class SSHSessionForCowrieUser(object):
     def execCommand(self, processprotocol, cmd):
         """
         """
-        irassh_actions.CasePersister().log(cmd)
-        irassh_actions.CasePersister().saveState(self.current_irassh_case, cmd)
-
         self.protocol = insults.LoggingServerProtocol(
             protocol.HoneyPotExecProtocol, self, cmd)
         self.protocol.makeConnection(processprotocol)

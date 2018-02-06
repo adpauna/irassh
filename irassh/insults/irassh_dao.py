@@ -26,7 +26,7 @@ class IRasshDao:
 
     def getFakeOutput(self, cmd):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM fake_commands WHERE command=%s", (cmd))
+        cursor.execute("SELECT * FROM fake_commands WHERE command = %s", (cmd,))
         for record in cursor:
             return record["fake_output"]
 
@@ -39,7 +39,7 @@ class IRasshDao:
         next_cmd = case["next_cmd"]
 
         cursor.execute(
-            "INSERT INTO cases(initial_cmd, action, next_cmd, cmd_profile, rl_params) VALUES(%s, %s, %s, %s, %s)",
+            "INSERT INTO cases(initial_cmd, action, next_cmd, cmd_profile, rl_params) VALUES (%s, %s, %s, %s, %s)",
             (
                 initial_cmd,
                 case["action"],
@@ -52,19 +52,21 @@ class IRasshDao:
 
     def getProfile(self, cmd):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT prof_type FROM commands WHERE command=%s", (cmd))
+        cursor.execute("SELECT prof_type FROM commands WHERE command = %s", (cmd,))
         for record in cursor:
             return record["prof_type"]
-        return ""
+        return "no prof_type in commands for command: `" + cmd + "`"
 
     def getInsultMsg(self, loc):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT message FROM messages WHERE country=%s", (loc,))
+        print ("SELECT message FROM messages WHERE country = %s: " + loc)
+        cursor.execute("SELECT message FROM messages WHERE country = %s", (loc,))
         for record in cursor:
             return record["message"].strip()
 
         cursor = self.connection.cursor()
-        cursor.execute("SELECT message FROM messages WHERE country=%s", ('DEFAULT',))
+        print ("SELECT message FROM messages WHERE country = %s: DEFAULT")
+        cursor.execute("SELECT message FROM messages WHERE country = %s", ('DEFAULT',))
         for record in cursor:
             return record["message"].strip()
 
