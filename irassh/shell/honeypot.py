@@ -193,7 +193,7 @@ class HoneyPotShell(object):
         self.protocol = protocol
         self.interactive = interactive
         self.cmdpending = []
-        self.current_irassh_case = {}
+        self.actionState = {}
         self.environ = protocol.environ
         self.lexer = None
         self.showPrompt()
@@ -372,10 +372,11 @@ class HoneyPotShell(object):
 
         if pp:
             # log command to database
-            irassh_actions.CaseLogPersister().save(self.current_irassh_case, cmd['command'])
+            irassh_actions.ActionPersister().save(self.actionState, cmd['command'])
 
             # validate command
-            validator = irassh_actions.ActionValidator(self.protocol.terminal.write)
+            actionListener = irassh_actions.ActionListener(self.actionState)
+            validator = irassh_actions.ActionValidator(self.protocol.terminal.write, actionListener)
             valid = validator.validate(cmd['command'], self.protocol.clientIP)
             if valid:
                 self.protocol.call_command(pp, cmdclass, *cmd_array[0]['rargs'])

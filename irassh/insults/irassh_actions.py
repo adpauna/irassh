@@ -85,12 +85,14 @@ class FakeAction(Action):
 
 class ActionFactory(object):
 
-    def __init__(self, write):
+    def __init__(self, write, listener):
         self.write = write
+        self.listener = listener
         pass
 
     def getAction(self, cmd, clientIp):
         action = random.randrange(0, 4)
+        self.listener.handle(action)
         if action == 0:
             return AllowAction(self.write)
         elif action == 1:
@@ -104,23 +106,32 @@ class ActionFactory(object):
 
 
 class ActionValidator(object):
-    def __init__(self, write):
+    def __init__(self, write, listener):
         self.write = write
+        self.listener = listener
         pass
 
     def validate(self, cmd, clientIp):
-        action = ActionFactory(self.write).getAction(cmd, clientIp)
+        action = ActionFactory(self.write, self.listener).getAction(cmd, clientIp)
         action.process()
         return action.isPassed()
 
 
-class CaseLogPersister(object):
-    def save(self, case, cmd):
-
-        if "initial_cmd" in case.keys():
+class ActionPersister(object):
+    def save(self, actionState, cmd):
+        if "initial_cmd" in actionState.keys():
             print("Save next_cmd: " + cmd)
-            case["next_cmd"] = cmd
-            irassh_dao.getIRasshDao().saveCase(case)
+            actionState["next_cmd"] = cmd
+            irassh_dao.getIRasshDao().saveCase(actionState)
 
         print("Save initial_cmd: " + cmd)
-        case["initial_cmd"] = cmd
+        actionState["initial_cmd"] = cmd
+
+
+class ActionListener(object):
+    def __init__(self, store):
+        self.store = store
+        pass
+
+    def handle(self, action):
+        self.store["action"] = action

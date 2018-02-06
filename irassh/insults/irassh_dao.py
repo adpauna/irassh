@@ -1,7 +1,6 @@
-import irassh
 import MySQLdb
 import MySQLdb.cursors
-from irassh.core import dblog
+
 from irassh.core.config import *
 
 
@@ -16,6 +15,7 @@ class IRasshDao:
         db = cfg.get('output_mysql', 'database')
         user = cfg.get('output_mysql', 'username')
         pwd = cfg.get('output_mysql', 'password')
+        self.rl_params = ''
         self.connection = MySQLdb.connect(host=host, user=user, passwd=pwd, db=db, port=port,
                                           cursorclass=MySQLdb.cursors.DictCursor)
 
@@ -45,7 +45,7 @@ class IRasshDao:
                 case["action"],
                 next_cmd,
                 self.getProfile(initial_cmd),
-                str(irassh.core.constants.rl_params)
+                str(self.rl_params)
             )
         )
         self.connection.commit()
