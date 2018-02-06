@@ -114,16 +114,13 @@ class ActionValidator(object):
         return action.isPassed()
 
 
-class CasePersister(object):
-    def log(self, case):
-        if "initial_cmd" in case.keys():
-            irassh_dao.getIRasshDao().saveCase(case)
-
-    def saveState(self, case, cmd):
+class CaseLogPersister(object):
+    def save(self, case, cmd):
 
         if "initial_cmd" in case.keys():
             print("Save next_cmd: " + cmd)
             case["next_cmd"] = cmd
+            irassh_dao.getIRasshDao().saveCase(case)
 
         print("Save initial_cmd: " + cmd)
         case["initial_cmd"] = cmd

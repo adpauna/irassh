@@ -372,8 +372,7 @@ class HoneyPotShell(object):
 
         if pp:
             # log command to database
-            irassh_actions.CasePersister().log(self.current_irassh_case)
-            irassh_actions.CasePersister().saveState(self.current_irassh_case, cmd['command'])
+            irassh_actions.CaseLogPersister().save(self.current_irassh_case, cmd['command'])
 
             # validate command
             validator = irassh_actions.ActionValidator(self.protocol.terminal.write)
