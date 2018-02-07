@@ -7,8 +7,6 @@ This module contains ...
 
 from __future__ import division, absolute_import
 
-import os
-
 from zope.interface import implementer
 
 from twisted.python import log
@@ -17,7 +15,6 @@ from twisted.conch.ssh import session
 
 from irassh.shell import protocol
 from irassh.insults import insults
-from irassh.insults import irassh_actions
 
 
 @implementer(ISession)

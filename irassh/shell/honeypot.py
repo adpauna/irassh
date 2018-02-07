@@ -17,8 +17,9 @@ import sys
 from twisted.python import log, failure
 from twisted.internet import error
 
-from irassh.insults import irassh_actions
+from irassh.actions import proxy
 from irassh.shell import fs
+from irassh.rl import rl_state
 
 # From Python3.6 we get the new shlex version
 if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
@@ -372,12 +373,15 @@ class HoneyPotShell(object):
 
         if pp:
             # log command to database
-            irassh_actions.ActionPersister().save(self.actionState, cmd['command'])
+            raw_cmd = cmd['command']
+            rl_state.current_command = raw_cmd
+            proxy.ActionPersister().save(self.actionState, raw_cmd)
 
             # validate command
-            actionListener = irassh_actions.ActionListener(self.actionState)
-            validator = irassh_actions.ActionValidator(self.protocol.terminal.write, actionListener)
-            valid = validator.validate(cmd['command'], self.protocol.clientIP)
+            actionListener = proxy.ActionListener(self.actionState)
+            generator = proxy.RandomActionGenerator
+            validator = proxy.ActionValidator(self.protocol.terminal.write, actionListener, generator)
+            valid = validator.validate(raw_cmd, self.protocol.clientIP)
             if valid:
                 self.protocol.call_command(pp, cmdclass, *cmd_array[0]['rargs'])
 
