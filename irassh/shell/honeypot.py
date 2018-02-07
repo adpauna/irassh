@@ -379,7 +379,7 @@ class HoneyPotShell(object):
 
             # validate command
             actionListener = proxy.ActionListener(self.actionState)
-            generator = proxy.RandomActionGenerator
+            generator = proxy.RandomActionGenerator()
             validator = proxy.ActionValidator(self.protocol.terminal.write, actionListener, generator)
             valid = validator.validate(raw_cmd, self.protocol.clientIP)
             if valid:
