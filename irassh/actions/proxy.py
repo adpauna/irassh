@@ -5,8 +5,10 @@ import time
 import pygeoip
 
 from irassh.rl import rl_state
+from irassh.rl import rl
 from irassh.actions import dao
 
+RL = rl.RL()
 
 class Action(object):
     def __init__(self, write):
