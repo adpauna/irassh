@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `input` (
   `realm` varchar(50) default NULL,
   `success` tinyint(1) default NULL,
   `input` text NOT NULL,
+  `action` text NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `session` (`session`,`timestamp`,`realm`)
 ) ;
