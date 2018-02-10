@@ -4,9 +4,9 @@ import time
 
 import pygeoip
 
-from irassh.rl import rl_state
-from irassh.rl import rl
 from irassh.actions import dao
+from irassh.rl import rl
+from irassh.rl import rl_state
 
 RL = rl.RL()
 
@@ -68,7 +68,7 @@ class InsultAction(Action):
 
     def process(self):
         location = self.getCountryCode()
-        self.write("Insult Message! IP= %s/location=%s\n" % (self.clientIp, location))
+        print("Insult Message! IP= %s/location=%s\n" % (self.clientIp, location))
         self.write(dao.getIRasshDao().getInsultMsg(location) + "\n")
 
     def getCountryCode(self):
