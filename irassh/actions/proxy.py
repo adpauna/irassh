@@ -38,6 +38,9 @@ class BlockedAction(Action):
     def process(self):
         self.write("Blocked command!\n")
 
+    def getActionName(self):
+        return "Blocked"
+
 
 class DelayAction(Action):
     def process(self):
@@ -45,11 +48,16 @@ class DelayAction(Action):
         self.setPassed(True)
         self.write("delay ...\n")
 
+    def getActionName(self):
+        return "Delay"
+
 
 class AllowAction(Action):
     def process(self):
         self.setPassed(True)
 
+    def getActionName(self):
+        return "Allow"
 
 class InsultAction(Action):
     def __init__(self, clientIp, write):
@@ -70,6 +78,9 @@ class InsultAction(Action):
         geo_ip = pygeoip.GeoIP(file_name)
         return geo_ip.country_code_by_addr(self.clientIp)
 
+    def getActionName(self):
+        return "Insult"
+
 
 class FakeAction(Action):
     def __init__(self, command, write):
@@ -82,6 +93,9 @@ class FakeAction(Action):
         fake_output = dao.getIRasshDao().getFakeOutput(self.command)
         if fake_output is not None:
             self.write(fake_output + "\n")
+
+    def getActionName(self):
+        return "Fake"
 
 
 class ActionGenerator(object):
@@ -134,16 +148,17 @@ class ActionFactory(object):
 
 
 class ActionValidator(object):
-    def __init__(self, write, listener, generator):
-        self.write = write
-        self.listener = listener
-        self.generator = generator
+    def __init__(self, factory):
+        self.factory = factory
         pass
 
     def validate(self, cmd, clientIp):
-        action = ActionFactory(self.write, self.listener, self.generator).getAction(cmd, clientIp)
-        action.process()
-        return action.isPassed()
+        self.action = self.factory.getAction(cmd, clientIp)
+        self.action.process()
+        return self.action.isPassed()
+
+    def getActionName(self):
+        return self.action.getActionName()
 
 
 class ActionPersister(object):

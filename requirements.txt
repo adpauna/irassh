@@ -10,3 +10,10 @@ attrs
 service_identity
 python-dateutil
 tftpy
+pybrain
+pygeoip
+matplotlib
+scipy
+pyasn1
+pycrypto
+MySQL-python

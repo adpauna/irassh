@@ -355,11 +355,26 @@ class HoneyPotShell(object):
             cmd = {}
 
         lastpp = None
+        actionValid = None
         for index, cmd in reversed(list(enumerate(cmd_array))):
 
             cmdclass = self.protocol.getCommand(cmd['command'], environ['PATH'] .split(':'))
             if cmdclass:
-                log.msg(eventid='irassh.command.success', input=cmd['command'] + " " + ' '.join(cmd['rargs']), format='Command found: %(input)s')
+                # log command to database
+                raw_cmd = cmd['command']
+                rl_state.current_command = raw_cmd
+                proxy.ActionPersister().save(self.actionState, raw_cmd)
+
+                # generate action
+                actionListener = proxy.ActionListener(self.actionState)
+                generator = proxy.RandomActionGenerator()
+                actionFactory = proxy.ActionFactory(self.protocol.terminal.write, actionListener, generator)
+
+                validator = proxy.ActionValidator(actionFactory)
+                actionValid = validator.validate(raw_cmd, self.protocol.clientIP)
+                actionName = validator.getActionName();
+
+                log.msg(eventid='irassh.command.action.success', action=actionName, input=cmd['command'] + " " + ' '.join(cmd['rargs']), format='Command found: %(input)s')
                 if index == len(cmd_array)-1:
                     lastpp =  StdOutStdErrEmulationProtocol(self.protocol, cmdclass, cmd['rargs'], None, None)
                     pp = lastpp
@@ -371,19 +386,8 @@ class HoneyPotShell(object):
                 self.protocol.terminal.write('bash: {}: command not found\n'.format(cmd['command']))
                 runOrPrompt()
 
-        if pp:
-            # log command to database
-            raw_cmd = cmd['command']
-            rl_state.current_command = raw_cmd
-            proxy.ActionPersister().save(self.actionState, raw_cmd)
-
-            # validate command
-            actionListener = proxy.ActionListener(self.actionState)
-            generator = proxy.RandomActionGenerator()
-            validator = proxy.ActionValidator(self.protocol.terminal.write, actionListener, generator)
-            valid = validator.validate(raw_cmd, self.protocol.clientIP)
-            if valid:
-                self.protocol.call_command(pp, cmdclass, *cmd_array[0]['rargs'])
+        if pp and actionValid:
+            self.protocol.call_command(pp, cmdclass, *cmd_array[0]['rargs'])
 
 
     def resume(self):

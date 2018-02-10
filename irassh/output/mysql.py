@@ -135,6 +135,12 @@ class Output(irassh.core.output.Output):
                 (entry["session"], 0, entry['username'], entry['password'],
                 entry["time"]))
 
+        elif entry["eventid"] == 'irassh.command.action.success':
+            self.simpleQuery('INSERT INTO `input`' + \
+                ' (`session`, `timestamp`, `success`, `input`, `action`)' + \
+                ' VALUES (%s, FROM_UNIXTIME(%s), %s , %s, %s)',
+                (entry["session"], entry["time"], 1, entry["input"], entry["action"]))
+
         elif entry["eventid"] == 'irassh.command.success':
             self.simpleQuery('INSERT INTO `input`' + \
                 ' (`session`, `timestamp`, `success`, `input`)' + \

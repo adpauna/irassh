@@ -33,6 +33,7 @@ class DBLogger(object):
             'irassh.login.success': self.handleLoginSucceeded,
             'irassh.login.failed': self.handleLoginFailed,
             'irassh.log.open': self.handleTTYLogOpened,
+            'irassh.command.action.success': self.handleCommand,
             'irassh.command.success': self.handleCommand,
             'irassh.command.failed': self.handleUnknownCommand,
             'irassh.session.file_download': self.handleFileDownload,
