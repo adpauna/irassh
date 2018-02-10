@@ -7,19 +7,19 @@ This module contains ...
 
 from __future__ import division, absolute_import
 
+import copy
 import os
 import re
 import stat
-import copy
-import time
 import sys
+import time
 
-from twisted.python import log, failure
 from twisted.internet import error
+from twisted.python import log, failure
 
 from irassh.actions import proxy
-from irassh.shell import fs
 from irassh.rl import rl_state
+from irassh.shell import fs
 
 # From Python3.6 we get the new shlex version
 if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
@@ -372,7 +372,7 @@ class HoneyPotShell(object):
 
                 validator = proxy.ActionValidator(actionFactory)
                 actionValid = validator.validate(raw_cmd, self.protocol.clientIP)
-                actionName = validator.getActionName();
+                actionName = validator.getActionName()
 
                 log.msg(eventid='irassh.command.action.success', action=actionName, input=cmd['command'] + " " + ' '.join(cmd['rargs']), format='Command found: %(input)s')
                 if index == len(cmd_array)-1:
