@@ -28,3 +28,23 @@ For Python dependencies, see requirements.txt
 ## How to run
 * `bin/irassh start` - start the server
 * `bin/irassh stop` - stop the server
+* Start client: `ssh root@localhost -p 2222`, input any pwd
+* Run playlog: `bin/playlog log/tty/[file_name]`
+
+## How to setup
+
+### Setup mysql database
+* Setup mysql server and create one account
+* Create database `irassh`
+* Run all sql files in folder doc/sql
+* Change mysql info in irassh.cfg.dist, line 416
+
+### Setup python virtual env
+* Create virtual env: `virtualenv irassh-env` if not installed yet
+* Init this env: `source irassh-env/bin/activate`
+* Install python requirements: `pip install -r requirements.txt`
+
+## New features
+* Add action to playlog
+* Add action mysql log
+* Move all functions from rassh to irassh
