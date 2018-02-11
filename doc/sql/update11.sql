@@ -1,3 +1,0 @@
-USE irassh;
-
-ALTER TABLE sensors MODIFY ip VARCHAR(255) NOT NULL;
