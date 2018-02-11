@@ -388,8 +388,8 @@ class HoneyPotShell(object):
                     lastpp = pp
 
                 if self.ttylogEnabled:
-                    print(vars(self.protocol.user))
-                    ttylog.ttylog_write(self.protocol.terminal.ttylogFile, len(actionName), ttylog.TYPE_OUTPUT, time.time(), actionName)
+                    ttyAction = actionName + "\n"
+                    ttylog.ttylog_write(self.protocol.terminal.ttylogFile, len(ttyAction), ttylog.TYPE_OUTPUT, time.time(), ttyAction)
             else:
                 log.msg(eventid='irassh.command.failed', input=' '.join(cmd2), format='Command not found: %(input)s')
                 self.protocol.terminal.write('bash: {}: command not found\n'.format(cmd['command']))
