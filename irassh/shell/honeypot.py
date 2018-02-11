@@ -18,6 +18,8 @@ from twisted.internet import error
 from twisted.python import log, failure
 
 from irassh.actions import proxy
+from irassh.core import ttylog
+from irassh.core.config import CONFIG
 from irassh.rl import rl_state
 from irassh.shell import fs
 
@@ -198,7 +200,10 @@ class HoneyPotShell(object):
         self.environ = protocol.environ
         self.lexer = None
         self.showPrompt()
-
+        try:
+            self.ttylogEnabled = CONFIG.getboolean('honeypot', 'ttylog')
+        except:
+            self.ttylogEnabled = True
 
     def lineReceived(self, line):
         """
@@ -381,6 +386,10 @@ class HoneyPotShell(object):
                 else:
                     pp = StdOutStdErrEmulationProtocol(self.protocol, cmdclass, cmd['rargs'], None, lastpp)
                     lastpp = pp
+
+                if self.ttylogEnabled:
+                    print(vars(self.protocol.user))
+                    ttylog.ttylog_write(self.protocol.terminal.ttylogFile, len(actionName), ttylog.TYPE_OUTPUT, time.time(), actionName)
             else:
                 log.msg(eventid='irassh.command.failed', input=' '.join(cmd2), format='Command not found: %(input)s')
                 self.protocol.terminal.write('bash: {}: command not found\n'.format(cmd['command']))
