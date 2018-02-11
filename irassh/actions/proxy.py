@@ -46,7 +46,7 @@ class DelayAction(Action):
     def process(self):
         time.sleep(3)
         self.setPassed(True)
-        self.write("delay ...\n")
+        print("delay ...\n")
 
     def getActionName(self):
         return "Delay"
