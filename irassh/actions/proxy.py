@@ -10,6 +10,7 @@ from irassh.rl import rl_state
 
 RL = rl.RL()
 
+
 class Action(object):
     def __init__(self, write):
         self.is_allowed = True
@@ -41,6 +42,9 @@ class BlockedAction(Action):
     def getActionName(self):
         return "Blocked"
 
+    def getColor(self):
+        return "31"
+
 
 class DelayAction(Action):
     def process(self):
@@ -51,6 +55,9 @@ class DelayAction(Action):
     def getActionName(self):
         return "Delay"
 
+    def getColor(self):
+        return "34"
+
 
 class AllowAction(Action):
     def process(self):
@@ -58,6 +65,10 @@ class AllowAction(Action):
 
     def getActionName(self):
         return "Allow"
+
+    def getColor(self):
+        return "32"
+
 
 class InsultAction(Action):
     def __init__(self, clientIp, write):
@@ -81,6 +92,9 @@ class InsultAction(Action):
     def getActionName(self):
         return "Insult"
 
+    def getColor(self):
+        return "38"
+
 
 class FakeAction(Action):
     def __init__(self, command, write):
@@ -96,6 +110,9 @@ class FakeAction(Action):
 
     def getActionName(self):
         return "Fake"
+
+    def getColor(self):
+        return "33"
 
 
 class ActionGenerator(object):
@@ -159,6 +176,9 @@ class ActionValidator(object):
 
     def getActionName(self):
         return self.action.getActionName()
+
+    def getActionColor(self):
+        return self.action.getColor()
 
 
 class ActionPersister(object):

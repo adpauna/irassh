@@ -378,6 +378,7 @@ class HoneyPotShell(object):
                 validator = proxy.ActionValidator(actionFactory)
                 actionValid = validator.validate(raw_cmd, self.protocol.clientIP)
                 actionName = validator.getActionName()
+                actionColor = validator.getActionColor()
 
                 log.msg(eventid='irassh.command.action.success', action=actionName, input=cmd['command'] + " " + ' '.join(cmd['rargs']), format='Command found: %(input)s')
                 if index == len(cmd_array)-1:
@@ -388,7 +389,7 @@ class HoneyPotShell(object):
                     lastpp = pp
 
                 if self.ttylogEnabled:
-                    ttyAction = actionName + "\n"
+                    ttyAction = '\033[1;' + actionColor + 'm' + actionName.capitalize() + '\033[1;m\n'
                     ttylog.ttylog_write(self.protocol.terminal.ttylogFile, len(ttyAction), ttylog.TYPE_OUTPUT, time.time(), ttyAction)
             else:
                 log.msg(eventid='irassh.command.failed', input=' '.join(cmd2), format='Command not found: %(input)s')
