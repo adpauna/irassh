@@ -80,7 +80,7 @@ class InsultAction(Action):
     def process(self):
         location = self.getCountryCode()
         print("Insult Message! IP= %s/location=%s\n" % (self.clientIp, location))
-        self.write(dao.getIRasshDao().getInsultMsg(location) + "\n")
+        self.write(dao.getIRasshDao().getInsultMsg(location.lower()) + "\n")
 
     def getCountryCode(self):
         path, file = os.path.split(__file__)
