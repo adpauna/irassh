@@ -126,18 +126,21 @@ class RandomActionGenerator(ActionGenerator):
 class RlActionGenerator(ActionGenerator):
     def generate(self):
         print ("get action by q-learning", rl_state.current_command)
+        global rl_agent
         rl_agent.train(rl_state.current_command)
         return rl_agent.choose_action()
 
 
 class ActionFactory(object):
 
-    def __init__(self, write, listener, generator=None):
+    def __init__(self, write, listener, generator):
         self.write = write
         self.listener = listener
+        self.generator = generator
         pass
 
-    def getAction(self, cmd, clientIp, action):
+    def getAction(self, cmd, clientIp):
+        action = self.generator.generate()
         self.listener.handle(action)
         if action == 0:
             return AllowAction(self.write)
