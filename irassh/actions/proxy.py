@@ -155,6 +155,7 @@ class ActionFactory(object):
 
     def getAction(self, cmd, clientIp):
         action = self.generator.generate()
+        print("Receive action: ", action)
         self.listener.handle(action)
         if action == 0:
             return AllowAction(self.write)

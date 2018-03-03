@@ -37,16 +37,16 @@ class IRasshDao:
         initial_cmd = case["initial_cmd"]
         next_cmd = case["next_cmd"]
 
-        cursor.execute(
-            "INSERT INTO cases(initial_cmd, action, next_cmd, cmd_profile) VALUES (%s, %s, %s, %s, %s)",
-            (
-                initial_cmd,
-                case["action"],
-                next_cmd,
-                self.getProfile(initial_cmd)
-            )
-        )
-        self.connection.commit()
+        # cursor.execute(
+        #     "INSERT INTO cases(initial_cmd, action, next_cmd, cmd_profile) VALUES (%s, %s, %s, %s, %s)",
+        #     (
+        #         initial_cmd,
+        #         case["action"],
+        #         next_cmd,
+        #         self.getProfile(initial_cmd)
+        #     )
+        # )
+        # self.connection.commit()
 
     def getProfile(self, cmd):
         cursor = self.connection.cursor()
