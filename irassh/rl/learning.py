@@ -257,9 +257,9 @@ class q_learner:
 
     def choose_action(self, isTrained = False):
         if isTrained:
-            self.choose_action_after_training(self.state)
+            return self.choose_action_after_training(self.state)
         else:
-            self.choose_action_and_train(self.state)
+            return self.choose_action_and_train(self.state)
 
     def choose_action_and_train(self, state):
         if len(state.shape) == 1:
