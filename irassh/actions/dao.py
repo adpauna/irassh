@@ -2,7 +2,6 @@ import MySQLdb
 import MySQLdb.cursors
 
 from irassh.core.config import *
-from irassh.rl import rl_state
 
 
 class IRasshDao:
@@ -39,13 +38,12 @@ class IRasshDao:
         next_cmd = case["next_cmd"]
 
         cursor.execute(
-            "INSERT INTO cases(initial_cmd, action, next_cmd, cmd_profile, rl_params) VALUES (%s, %s, %s, %s, %s)",
+            "INSERT INTO cases(initial_cmd, action, next_cmd, cmd_profile) VALUES (%s, %s, %s, %s, %s)",
             (
                 initial_cmd,
                 case["action"],
                 next_cmd,
-                self.getProfile(initial_cmd),
-                str(rl_state.rl_params)
+                self.getProfile(initial_cmd)
             )
         )
         self.connection.commit()

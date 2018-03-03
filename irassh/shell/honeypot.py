@@ -23,22 +23,6 @@ from irassh.core.config import CONFIG
 from irassh.rl import rl_state
 from irassh.shell import fs
 
-
-from irassh.rl.learning import q_learner
-
-sequence_length = 10
-nn_param = [128, 128]
-params = {
-    "batchSize": 64,
-    "buffer": 5000,
-    "nn": nn_param,
-    "sequence_length": 10, # The number of commands that make of a state
-    "number_of_actions": 5,
-    "cmd2number_reward": "cmd2number_reward.p",
-    "GAMMA" :  0.9  # Forgetting.
-}
-rl_agent = q_learner(params)
-
 # From Python3.6 we get the new shlex version
 if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
     import shlex
@@ -388,13 +372,10 @@ class HoneyPotShell(object):
                 rl_state.current_command = raw_cmd
                 proxy.ActionPersister().save(self.actionState, raw_cmd)
 
-                #RL train and decision
-                rl_agent.train(raw_cmd)
-                action = rl_agent.choose_action()
-
                 # generate action
                 actionListener = proxy.ActionListener(self.actionState)
-                actionFactory = proxy.ActionFactory(self.protocol.terminal.write, actionListener, action)
+                generator = proxy.RlActionGenerator()
+                actionFactory = proxy.ActionFactory(self.protocol.terminal.write, actionListener, generator)
 
                 validator = proxy.ActionValidator(actionFactory)
                 actionValid = validator.validate(raw_cmd, self.protocol.clientIP)

@@ -5,11 +5,7 @@ import time
 import pygeoip
 
 from irassh.actions import dao
-from irassh.rl import rl
 from irassh.rl import rl_state
-
-RL = rl.RL()
-
 
 class Action(object):
     def __init__(self, write):
@@ -129,16 +125,9 @@ class RandomActionGenerator(ActionGenerator):
 
 class RlActionGenerator(ActionGenerator):
     def generate(self):
-        print ("getAction start", rl_state.current_command)
-        global RL
-        RL.go()
-        while True:
-            if rl_state.rl_action is not None:
-                print("********************", rl_state.rl_params)
-                return rl_state.rl_action[0]
-            else:
-                print("action not foud. going to wait ....", rl_state.current_command)
-                time.sleep(1)
+        print ("get action by q-learning", rl_state.current_command)
+        rl_agent.train(rl_state.current_command)
+        return rl_agent.choose_action()
 
 
 class ActionFactory(object):
