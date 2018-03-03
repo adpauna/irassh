@@ -9,7 +9,7 @@ import pickle
 
 
 TUNING = False  # If False, just use arbitrary, pre-selected params.
-# params example
+# params example, not used. Please check irassh/rl/rl_state.py
 sequence_length = 10
 nn_param = [128, 128]
 params = {
