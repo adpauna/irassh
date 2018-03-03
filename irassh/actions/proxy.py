@@ -6,6 +6,21 @@ import pygeoip
 
 from irassh.actions import dao
 from irassh.rl import rl_state
+from irassh.rl.learning import q_learner
+
+# generate RL state
+sequence_length = 10
+nn_param = [128, 128]
+params = {
+    "batchSize": 64,
+    "buffer": 5000,
+    "nn": nn_param,
+    "sequence_length": 10,  # The number of commands that make of a state
+    "number_of_actions": 5,
+    "cmd2number_reward": "irassh/rl/cmd2number_reward.p",
+    "GAMMA": 0.9  # Forgetting.
+}
+rl_agent = q_learner(params)
 
 class Action(object):
     def __init__(self, write):
@@ -126,7 +141,6 @@ class RandomActionGenerator(ActionGenerator):
 class RlActionGenerator(ActionGenerator):
     def generate(self):
         print ("get action by q-learning", rl_state.current_command)
-        global rl_agent
         rl_agent.train(rl_state.current_command)
         return rl_agent.choose_action()
 
