@@ -143,14 +143,12 @@ class RlActionGenerator(ActionGenerator):
 
 class ActionFactory(object):
 
-    def __init__(self, write, listener, generator):
+    def __init__(self, write, listener, generator=None):
         self.write = write
         self.listener = listener
-        self.generator = generator
         pass
 
-    def getAction(self, cmd, clientIp):
-        action = self.generator.generate()
+    def getAction(self, cmd, clientIp, action):
         self.listener.handle(action)
         if action == 0:
             return AllowAction(self.write)
