@@ -17,3 +17,6 @@ scipy
 pyasn1
 pycrypto
 MySQL-python
+numpy
+keras
+h5py
