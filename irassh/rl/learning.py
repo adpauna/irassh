@@ -6,7 +6,8 @@ import os.path
 import timeit
 import os
 import pickle
-
+import plotting
+import pandas as pd
 
 TUNING = False  # If False, just use arbitrary, pre-selected params.
 # params example, not used. Please check irassh/rl/rl_state.py
@@ -18,7 +19,7 @@ params = {
     "nn": nn_param,
     "sequence_length": 10, # The number of commands that make of a state
     "number_of_actions": 5,
-    "cmd2number_reward": "cmd2number_reward.p",
+    "cmd2number_reward": "Commands.xlsx",
     "GAMMA" :  0.9  # Forgetting.
 }
 
@@ -100,13 +101,10 @@ def train_net_test(params):
         # Generate the next command along with the reward
         cmd, reward = get_command_reward(cmd2number, cmd2reward)
 
-        if state_index == params["sequence_length"]:
-            # The oldest command is erased and the newest is introduced
-            np.roll(state, 1)
-            state[params["sequence_length"] - 1] = cmd
-        else:
-            # The next command is added to the state
-            state[state_index] = cmd
+        # The oldest command is erased and the newest is introduced
+        np.roll(state, 1)
+        state[params["sequence_length"] - 1] = cmd
+        if state_index < params["sequence_length"]:
             state_index = state_index + 1
         rl_agent.update_replay(reward, state)
 
@@ -144,13 +142,10 @@ def playing_test(params):
         # Look up reward for action
         reward = cmd2reward[cmd]
 
-        if state_index == params["sequence_length"]:
-            # The oldest command is erased and the newest is introduced
-            np.roll(state, 1)
-            state[params["sequence_length"] - 1] = cmd
-        else:
-            # The next command is added to the state
-            state[state_index] = cmd
+        # The oldest command is erased and the newest is introduced
+        np.roll(state, 1)
+        state[params["sequence_length"] - 1] = cmd
+        if state_index < params["sequence_length"]:
             state_index = state_index + 1
 
         # 56 is the "exit" command
@@ -162,9 +157,10 @@ def playing_test(params):
 
 class q_learner:
     def __init__(self, params, load_replay_file=None, save_replay_file_prefix="replay",
-                 save_model_file_prefix="saved-models/", save_every=250, end_value=-500):
+                 save_model_file_prefix="saved-models/", save_every=500, end_value=-500):
         # This where the input values are saved so they can be used in other functions whithin the class
 
+        self.params = params
         # sequence_length specifies the number of commands that form a state
         self.sequence_length = params['sequence_length']
         # number_of_actions specifies the number of possible actions
@@ -192,7 +188,12 @@ class q_learner:
 
         if isinstance(params["cmd2number_reward"], str):
             #if string load from file
-            self.cmd2number_reward = pickle.load(open(params["cmd2number_reward"],"rb"))
+
+            extention = params["cmd2number_reward"].split(".")[-1]
+            if extention == "xlsx":
+                self.cmd2number_reward = get_cmd2reward(params["cmd2number_reward"])
+            else:
+                self.cmd2number_reward = pickle.load(open(params["cmd2number_reward"],"rb"))
         else:
             # if dictionary
             self.cmd2number_reward = params["cmd2number_reward"]
@@ -203,13 +204,15 @@ class q_learner:
         # Just stuff used below.
         self.max_hacker_cmds = 0
         self.hacker_cmds = 0
-        self.t = 0
+
         self.data_collect = []
         if load_replay_file is None:
             self.replay = []  # stores tuples of (S, A, R, S').
         else:
             self.replay = pickle.load(open(load_replay_file, "rb"))
 
+
+        self.t = len(self.replay)
         self.loss_log = []
 
         # Let's time it.
@@ -221,32 +224,30 @@ class q_learner:
         self.model.save_weights(filename,overwrite=True)
 
     def load_model(self, filename):
-        self.model = neural_net(self.sequence_length, self.number_of_actions, params["nn"], filename)
+        self.model = neural_net(self.sequence_length, self.number_of_actions, self.params["nn"], filename)
 
     def train(self, cmd):
+        cmd = cmd.lower()
         # Check if the command is known
         if cmd in self.cmd2number_reward:
             cmd_num, reward = self.cmd2number_reward[cmd]
         else:
             cmd_num, reward = self.cmd2number_reward["unknown"]
 
-
+        self.old_state = np.copy(self.state)
         if self.state_index >= 1:
-            if self.state_index == self.sequence_length:
-                # The oldest command is erased and the newest is introduced
-                np.roll(self.state, 1)
-                self.state[self.sequence_length - 1] = cmd_num
-            else:
-                # The next command is added to the state
-                self.state[self.state_index] = cmd_num
+            # The oldest command is erased and the newest is introduced
+            np.roll(self.state, 1)
+            self.state[self.sequence_length - 1] = cmd_num
+            if self.state_index < self.sequence_length:
                 self.state_index = self.state_index + 1
-
             self.update_replay(reward, self.state)
             # 56 is the "exit" command
-            if cmd_num == 56:
+            if cmd == "exit":
                 # The state is reset
-                self.state = np.zeros(params["sequence_length"])
+                self.state = np.zeros(self.sequence_length)
                 self.state_index = 0
+
         else:
             # The state is a sequence of the last params["sequence_length"] commands given
             # Here the first command is inputed into the state
@@ -289,7 +290,7 @@ class q_learner:
             action = self.lastAction
 
         # Experience replay storage.
-        self.replay.append((np.copy(self.state), action, reward, np.copy(new_state)))
+        self.replay.append((np.copy(self.old_state), action, reward, np.copy(new_state)))
 
         # If we're done observing, start training.
         if self.t > self.observe:
@@ -311,6 +312,25 @@ class q_learner:
             )
             self.loss_log.append(history.losses)
 
+            if self.t % self.save_every == 0:
+                if len(self.data_collect) > 50:
+                    # Save the results to a file so we can graph it later.
+                    learn_f = 'results/command-frames/learn_data-' + self.filename + '.csv'
+                    with open(learn_f, 'w', newline='') as data_dump:
+                        wr = csv.writer(data_dump)
+                        wr.writerows(self.data_collect)
+                    plotting.plot_file(learn_f, 'learn')
+
+                if len(self.loss_log) > 500:
+                    loss_f = 'results/command-frames/loss_data-' + self.filename + '.csv'
+                    with open(loss_f, 'w', newline='') as lf:
+                        wr = csv.writer(lf)
+                        for loss_item in self.loss_log:
+                            wr.writerow(loss_item)
+
+                    plotting.plot_file(loss_f, 'loss')
+
+
         # Update the starting state with S'.
         self.state = new_state
 
@@ -321,6 +341,7 @@ class q_learner:
         # We died, so update stuff.
         if reward == -500:
             # Log the car's distance at this T.
+            print([self.t, self.hacker_cmds])
             self.data_collect.append([self.t, self.hacker_cmds])
 
             # Update max.
@@ -347,13 +368,14 @@ class q_learner:
                                     overwrite=True)
             print("Saving model %s - %d" % (self.filename, self.t))
 
+
     def log_results(self):
         # Log results after we're done all frames.
         log_results(self.filename, self.data_collect, self.loss_log)
 
 
 # In cmd2type.p a dictionary with the commands as keys and their types as values is saved in the pickle format
-def get_cmd2reward(filename="cmd2type.p"):
+def get_cmd2reward_old(filename="cmd2type.p"):
     cmd2type = pickle.load(open(filename, "rb"))
     cmd2number_reward = dict()
     for cmd in cmd2type:
@@ -366,6 +388,40 @@ def get_cmd2reward(filename="cmd2type.p"):
     pickle.dump(cmd2number_reward,open("cmd2number_reward.p","wb"))
     return cmd2number_reward
 
+def get_cmd2reward(filename="irassh/rl/Commands.xlsx", save_pickle=False):
+    cmd2number_reward = dict()
+    xl = pd.ExcelFile(filename)
+    '''
+    Reward:
+        hacker <- 200
+        download <- 500
+        implemented and not download <- 0
+        not implemented and not download <- -200
+        "exit" <- -500
+    '''
+    for sheet_name in xl.sheet_names:
+        df = xl.parse(sheet_name)
+        if sheet_name == "Hacker":
+            for row_index, row in df.iterrows():
+                cmd = row["IRASSH commands"].lower()
+                cmd2number_reward[cmd] = (len(cmd2number_reward) + 1, 200)
+        elif sheet_name == "Linux":
+            for row_index, row in df.iterrows():
+                cmd = row["IRASSH commands"].lower()
+                isImplemented = row["Type_based_on_implementation"]=="implemented in code (real functionality emulated )"
+                isDownload    = row["Type_based_on_rl_algo"]=="download"
+                reward = 0
+                if isDownload:
+                    reward = 500
+                elif not isImplemented:
+                    reward = -200
+                cmd2number_reward[cmd] = (len(cmd2number_reward) + 1, reward)
+
+    cmd2number_reward["exit"] = (len(cmd2number_reward) + 1, -500)
+    cmd2number_reward["unknown"] =(len(cmd2number_reward) + 1, 0)
+    if save_pickle:
+        pickle.dump(cmd2number_reward,open("cmd2number_reward.p","wb"), protocol=0)
+    return cmd2number_reward
 
 def log_results(filename, data_collect, loss_log):
     # Save the results to a file so we can graph it later.

@@ -1,6 +1,7 @@
 import os
 import random
 import time
+import sys
 
 import pygeoip
 
@@ -136,6 +137,32 @@ class ActionGenerator(object):
 class RandomActionGenerator(ActionGenerator):
     def generate(self):
         return random.randrange(0, 4)
+
+class ManualActionGenerator(ActionGenerator):
+    def generate(self):
+        message = '''
+Select manual action:
+
+0 : Allow
+1: Block
+2: Delay
+3: Fake
+4: Insult
+            '''
+        while True:
+            if sys.version_info.major >= 3:
+                action = input(message)
+            else:
+                action = raw_input(message)
+            try:
+                action = int(action)
+                if action>-1 and action<5:
+                    return action
+                else:
+                    print("Number not in list")
+            except Exception as e:
+                print("Please input a number")
+
 
 
 class RlActionGenerator(ActionGenerator):

@@ -30,7 +30,7 @@ else:
     from irassh.shell import shlex
 
 
-
+manual = False
 
 class HoneyPotCommand(object):
     """
@@ -374,7 +374,11 @@ class HoneyPotShell(object):
 
                 # generate action
                 actionListener = proxy.ActionListener(self.actionState)
-                generator = proxy.RlActionGenerator()
+
+                if manual:
+                    generator = proxy.ManualActionGenerator()
+                else:
+                    generator = proxy.RlActionGenerator()
                 actionFactory = proxy.ActionFactory(self.protocol.terminal.write, actionListener, generator)
 
                 validator = proxy.ActionValidator(actionFactory)
@@ -391,7 +395,7 @@ class HoneyPotShell(object):
                     lastpp = pp
 
                 if self.ttylogEnabled:
-                    ttyAction = '\033[1;' + actionColor + 'm' + actionName.upper() + '\033[1;m #q_learner \n'
+                    ttyAction = '\033[1;' + actionColor + 'm' + actionName.upper() + '\033[1;m\n'
                     ttylog.ttylog_write(self.protocol.terminal.ttylogFile, len(ttyAction), ttylog.TYPE_OUTPUT, time.time(), ttyAction)
             else:
                 log.msg(eventid='irassh.command.failed', input=' '.join(cmd2), format='Command not found: %(input)s')
