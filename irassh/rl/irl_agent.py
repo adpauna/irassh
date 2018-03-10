@@ -5,7 +5,7 @@ from nn import neural_net  # construct the nn and send to playing
 from cvxopt import matrix
 from cvxopt import solvers  # convex optimization library
 import pickle
-from learning import q_learner
+from learning import q_learner, get_cmd2reward
 
 
 NUM_STATES = 8
@@ -44,7 +44,11 @@ class irlAgent:
 
         if isinstance(params["cmd2number_reward"], str):
             #if string load from file
-            self.cmd2number_reward = pickle.load(open(params["cmd2number_reward"],"rb"))
+            extention = params["cmd2number_reward"].split(".")[-1]
+            if extention == "xlsx":
+                self.cmd2number_reward = get_cmd2reward(params["cmd2number_reward"])
+            else:
+                self.cmd2number_reward = pickle.load(open(params["cmd2number_reward"],"rb"))
         else:
             # if dictionary
             self.cmd2number_reward = params["cmd2number_reward"]

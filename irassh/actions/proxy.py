@@ -8,6 +8,7 @@ import pygeoip
 from irassh.actions import dao
 from irassh.rl import rl_state
 from irassh.rl.learning import q_learner
+from irassh.rl.manual import ManualLearner
 
 # generate RL state
 sequence_length = 10
@@ -18,10 +19,11 @@ params = {
     "nn": nn_param,
     "sequence_length": 10,  # The number of commands that make of a state
     "number_of_actions": 5,
-    "cmd2number_reward": "irassh/rl/cmd2number_reward.p",
+    "cmd2number_reward":  "irassh/rl/cmd2number_reward.p",
     "GAMMA": 0.9  # Forgetting.
 }
 rl_agent = q_learner(params)
+policy_learner = ManualLearner(params)
 
 class Action(object):
     def __init__(self, write):
@@ -140,6 +142,7 @@ class RandomActionGenerator(ActionGenerator):
 
 class ManualActionGenerator(ActionGenerator):
     def generate(self):
+        policy_learner.log_cmd_resulted_from_action(rl_state.current_command)
         message = '''
 Select manual action:
 
