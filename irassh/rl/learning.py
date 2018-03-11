@@ -32,7 +32,9 @@ def train_qlearner(load=None, save=None):
     if load is not None:
         rl_agent.load_model(load)
     while True:
-        cmd = get_command()
+        cmds = list(rl_agent.cmd2number_reward.keys())
+        cmd_num = random.randint(1,len(cmds)-1)
+        cmd = cmds[cmd_num]
         rl_agent.train(cmd)
         action = rl_agent.choose_action(isTrained=False)
         do_action(action)
@@ -237,7 +239,7 @@ class q_learner:
         self.old_state = np.copy(self.state)
         if self.state_index >= 1:
             # The oldest command is erased and the newest is introduced
-            np.roll(self.state, 1)
+            self.state = np.roll(self.state, -1)
             self.state[self.sequence_length - 1] = cmd_num
             if self.state_index < self.sequence_length:
                 self.state_index = self.state_index + 1
@@ -388,7 +390,7 @@ def get_cmd2reward_old(filename="cmd2type.p"):
     pickle.dump(cmd2number_reward,open("cmd2number_reward.p","wb"))
     return cmd2number_reward
 
-def get_cmd2reward(filename="irassh/rl/Commands.xlsx", save_pickle=False):
+def get_cmd2reward(filename="irassh/rl/Commands.xlsx", save_pickle=True):
     cmd2number_reward = dict()
     xl = pd.ExcelFile(filename)
     '''
@@ -420,7 +422,9 @@ def get_cmd2reward(filename="irassh/rl/Commands.xlsx", save_pickle=False):
     cmd2number_reward["exit"] = (len(cmd2number_reward) + 1, -500)
     cmd2number_reward["unknown"] =(len(cmd2number_reward) + 1, 0)
     if save_pickle:
-        pickle.dump(cmd2number_reward,open("cmd2number_reward.p","wb"), protocol=0)
+        print("Saving")
+        with open("cmd2number_reward.p","wb") as f:
+            pickle.dump(cmd2number_reward,f, protocol=0)
     return cmd2number_reward
 
 def log_results(filename, data_collect, loss_log):

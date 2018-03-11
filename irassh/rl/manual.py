@@ -12,7 +12,6 @@ Also, always exit using down arrow key rather than Ctrl+C or your terminal will 
 
 import numpy as np
 from nn import neural_net
-import curses  # for keypress
 import pickle
 
 NUM_STATES = 8
@@ -27,6 +26,24 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+def trainManualLearner_test():
+    import random
+    sequence_length = 10
+    nn_param = [128, 128]
+    params = {
+        "batchSize": 64,
+        "buffer": 5000,
+        "nn": nn_param,
+        "sequence_length": sequence_length,  # The number of commands that make of a state
+        "number_of_actions": 5,
+        "cmd2number_reward": "cmd2number_reward.p",
+        "GAMMA": 0.9  # Forgetting.
+    }
+    ML = ManualLearner(params)
+    cmd = ""
+    while True:
+        ML.log_cmd_resulted_from_action(cmd)
 
 class ManualLearner:
     def __init__(self,params, policy_name="DefaultPolicy"):
@@ -55,16 +72,15 @@ class ManualLearner:
             cmd_num, reward = self.cmd2number_reward[cmd]
         else:
             cmd_num, reward = self.cmd2number_reward["unknown"]
-
+        print(cmd_num, reward)
         self.cmds += 1
 
 
         if self.state_index >= 1:
-            np.roll(self.state, 1)
+            self.state = np.roll(self.state, -1)
             self.state[self.sequence_length - 1] = cmd_num
             if self.state_index < self.sequence_length:
                 self.state_index = self.state_index + 1
-
 
             # 56 is the "exit" command
             if cmd == "exit":
@@ -93,3 +109,5 @@ class ManualLearner:
             except Exception:
                 print(bcolors.WARNING + "Can't save policy.\n Make sure the 'policies' folder exists along with other neccesary folders" + bcolors.ENDC)
 
+if __name__ == "__main__":
+    trainManualLearner_test()
