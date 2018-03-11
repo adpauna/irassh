@@ -194,10 +194,10 @@ class irlAgent:
 
 
         if state_index >= 1:
-            np.roll(self.state, 1)
-            self.state[self.sequence_length - 1] = cmd_num
-            if self.state_index < self.sequence_length:
-                self.state_index = self.state_index + 1
+            np.roll(state, 1)
+            state[self.sequence_length - 1] = cmd_num
+            if state_index < self.sequence_length:
+                state_index = state_index + 1
 
 
             # 56 is the "exit" command

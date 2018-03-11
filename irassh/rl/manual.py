@@ -33,6 +33,7 @@ class ManualLearner:
         self.policy_name = policy_name
         self.cmds = 0
         self.state = np.zeros(params['sequence_length'])
+        self.state_index = 0
 
         self.featureExpectations = np.zeros(params['sequence_length'])
         self.Prev = np.zeros(params['sequence_length'])
@@ -59,18 +60,14 @@ class ManualLearner:
 
 
         if self.state_index >= 1:
-            if self.state_index == self.sequence_length:
-                # The oldest command is erased and the newest is introduced
-                np.roll(self.state, 1)
-                self.state[self.sequence_length - 1] = cmd_num
-            else:
-                # The next command is added to the state
-                self.state[self.state_index] = cmd_num
+            np.roll(self.state, 1)
+            self.state[self.sequence_length - 1] = cmd_num
+            if self.state_index < self.sequence_length:
                 self.state_index = self.state_index + 1
 
 
             # 56 is the "exit" command
-            if cmd_num == 56:
+            if cmd == "exit":
                 # The state is reset
                 self.state = np.zeros(self.sequence_length)
                 self.state_index = 0
