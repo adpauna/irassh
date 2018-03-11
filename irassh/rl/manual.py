@@ -41,9 +41,26 @@ def trainManualLearner_test():
         "GAMMA": 0.9  # Forgetting.
     }
     ML = ManualLearner(params)
-    cmd = ""
+    cmd = "exit"
     while True:
         ML.log_cmd_resulted_from_action(cmd)
+
+def trainManualLearner_on_log(cmds):
+    sequence_length = 10
+    nn_param = [128, 128]
+    params = {
+        "batchSize": 64,
+        "buffer": 5000,
+        "nn": nn_param,
+        "sequence_length": sequence_length,  # The number of commands that make of a state
+        "number_of_actions": 5,
+        "cmd2number_reward": "cmd2number_reward.p",
+        "GAMMA": 0.9  # Forgetting.
+    }
+    ML = ManualLearner(params)
+    for cmd in cmds:
+        ML.log_cmd_resulted_from_action(cmd)
+    return ML.featureExpectations
 
 class ManualLearner:
     def __init__(self,params, policy_name="DefaultPolicy"):
@@ -72,6 +89,7 @@ class ManualLearner:
             cmd_num, reward = self.cmd2number_reward[cmd]
         else:
             cmd_num, reward = self.cmd2number_reward["unknown"]
+
         self.cmds += 1
 
 
@@ -96,7 +114,7 @@ class ManualLearner:
             self.featureExpectations += (GAMMA ** (self.cmds - 101)) * self.state
 
         # Tell us something.
-        changePercentage = (np.linalg.norm(self.featureExpectations - self.Prev) * 100.0) / np.linalg.norm(self.featureExpectations)
+        changePercentage = (np.linalg.norm(self.featureExpectations - self.Prev) * 100.0) / float(np.linalg.norm(self.featureExpectations))
 
         self.Prev = np.array(self.featureExpectations)
 

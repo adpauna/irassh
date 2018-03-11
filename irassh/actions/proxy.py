@@ -26,6 +26,7 @@ params = {
 }
 rl_agent = q_learner(params)
 policy_learner = ManualLearner(params)
+cmd_log = []
 
 class Action(object):
     def __init__(self, write):
@@ -189,7 +190,9 @@ class FileActionGenerator(ActionGenerator):
         self.file = file
 
     def generate(self):
-        policy_learner.log_cmd_resulted_from_action(rl_state.current_command)
+        cmd_log.append(rl_state.current_command)
+        with open("cmd_log.p","wb") as f:
+            pickle.dump(cmd_log, f, protocol=0)
         action = -1
         while action==-1:
             if os.path.isfile(self.file):
