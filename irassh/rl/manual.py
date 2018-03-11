@@ -34,8 +34,8 @@ class ManualLearner:
         self.cmds = 0
         self.state = np.zeros(params['sequence_length'])
 
-        self.featureExpectations = np.zeros(self.state)
-        self.Prev = np.zeros(self.state)
+        self.featureExpectations = np.zeros(params['sequence_length'])
+        self.Prev = np.zeros(params['sequence_length'])
         if isinstance(params["cmd2number_reward"], str):
             #if string load from file
             self.cmd2number_reward = pickle.load(open(params["cmd2number_reward"],"rb"))

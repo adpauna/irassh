@@ -23,6 +23,10 @@ from irassh.core.config import CONFIG
 from irassh.rl import rl_state
 from irassh.shell import fs
 
+import pickle
+
+action_file = "irassh/shell/action.p"
+cmd_file = "irassh/shell/cmd.p"
 # From Python3.6 we get the new shlex version
 if sys.version_info.major >= 3 and sys.version_info.minor >= 6:
     import shlex
@@ -376,7 +380,9 @@ class HoneyPotShell(object):
                 actionListener = proxy.ActionListener(self.actionState)
 
                 if manual:
-                    generator = proxy.ManualActionGenerator()
+                    with open(cmd_file,"wb") as f:
+                        pickle.dump(raw_cmd,f)
+                    generator = proxy.FileActionGenerator(action_file)
                 else:
                     generator = proxy.RlActionGenerator()
                 actionFactory = proxy.ActionFactory(self.protocol.terminal.write, actionListener, generator)

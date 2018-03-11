@@ -10,6 +10,8 @@ from irassh.rl import rl_state
 from irassh.rl.learning import q_learner
 from irassh.rl.manual import ManualLearner
 
+import pickle
+
 # generate RL state
 sequence_length = 10
 nn_param = [128, 128]
@@ -174,6 +176,30 @@ class RlActionGenerator(ActionGenerator):
         rl_agent.train(rl_state.current_command)
         return rl_agent.choose_action()
 
+class ConstActionGenerator(ActionGenerator):
+    def __init__(self, action):
+        self.action = action
+
+    def generate(self):
+        policy_learner.log_cmd_resulted_from_action(rl_state.current_command)
+        return self.action
+
+class FileActionGenerator(ActionGenerator):
+    def __init__(self, file):
+        self.file = file
+
+    def generate(self):
+        policy_learner.log_cmd_resulted_from_action(rl_state.current_command)
+        action = -1
+        while action==-1:
+            if os.path.isfile(self.file):
+                with open(self.file,"rb") as f:
+                    action = pickle.load(f)
+            if action==-1:
+                time.sleep(0.5)
+        with open(self.file,"wb") as f:
+            pickle.dump(-1, f)
+        return action
 
 class ActionFactory(object):
 
