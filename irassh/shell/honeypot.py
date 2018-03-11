@@ -35,6 +35,7 @@ else:
 
 
 manual = False
+use_irl= False
 
 class HoneyPotCommand(object):
     """
@@ -383,6 +384,8 @@ class HoneyPotShell(object):
                     with open(cmd_file,"wb") as f:
                         pickle.dump(raw_cmd,f)
                     generator = proxy.FileActionGenerator(action_file)
+                elif use_irl:
+                    generator = proxy.IrlActionGenerator()
                 else:
                     generator = proxy.RlActionGenerator()
                 actionFactory = proxy.ActionFactory(self.protocol.terminal.write, actionListener, generator)

@@ -9,6 +9,8 @@ from irassh.actions import dao
 from irassh.rl import rl_state
 from irassh.rl.learning import q_learner
 from irassh.rl.manual import ManualLearner
+from irassh.rl.irl_agent import irlAgent
+import numpy as np
 
 import pickle
 
@@ -26,6 +28,13 @@ params = {
 }
 rl_agent = q_learner(params)
 policy_learner = ManualLearner(params)
+
+#for irl agent
+randomPolicyFE = np.random.random_sample(sequence_length)
+# This need to be generated in manual.py
+expertPolicyFE = np.random.random_sample(sequence_length)
+irl_agent = irlAgent(params, randomPolicyFE, expertPolicyFE, num_frames=1100, behavior="DefaultPolicy")
+
 cmd_log = []
 
 class Action(object):
@@ -176,6 +185,11 @@ class RlActionGenerator(ActionGenerator):
         print ("get action by q-learning", rl_state.current_command)
         rl_agent.train(rl_state.current_command)
         return rl_agent.choose_action()
+
+class IrlActionGenerator(ActionGenerator):
+    def generate(self):
+        print ("get action by from irl agen", rl_state.current_command)
+        return irl_agent.choose_action_based_on_command(rl_state.current_command)
 
 class ConstActionGenerator(ActionGenerator):
     def __init__(self, action):
