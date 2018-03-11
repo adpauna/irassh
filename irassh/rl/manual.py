@@ -72,7 +72,6 @@ class ManualLearner:
             cmd_num, reward = self.cmd2number_reward[cmd]
         else:
             cmd_num, reward = self.cmd2number_reward["unknown"]
-        print(cmd_num, reward)
         self.cmds += 1
 
 
@@ -99,8 +98,6 @@ class ManualLearner:
         # Tell us something.
         changePercentage = (np.linalg.norm(self.featureExpectations - self.Prev) * 100.0) / np.linalg.norm(self.featureExpectations)
 
-        print(self.cmds)
-        print("percentage change in Feature expectation ::", changePercentage)
         self.Prev = np.array(self.featureExpectations)
 
         if self.cmds % 2000 == 0:
