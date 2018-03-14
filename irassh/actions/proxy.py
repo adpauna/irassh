@@ -202,12 +202,12 @@ class ConstActionGenerator(ActionGenerator):
         return self.action
 
 class FileActionGenerator(ActionGenerator):
-    def __init__(self, file):
+    def __init__(self):
         self.action_folder = "manual/control"
         self.cmd_file = "manual/input/cmd.p"
         self.action = -1
 
-    def change_handler(signum, frame):
+    def change_handler(self, signum, frame):
         with open(self.action_folder + "/receive-action.p", "rb") as af:
             self.action = pickle.load(af)
 
@@ -222,7 +222,7 @@ class FileActionGenerator(ActionGenerator):
         fcntl.fcntl(fd, fcntl.F_SETSIG, 0)
         fcntl.fcntl(fd, fcntl.F_NOTIFY, fcntl.DN_MODIFY)
 
-        while True and self.action != -1:
+        while self.action == -1:
             time.sleep(1000)
 
         return self.action
