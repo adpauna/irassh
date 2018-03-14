@@ -40,9 +40,11 @@ For Python dependencies, see requirements.txt
 * Change mysql info in irassh.cfg.dist, line 416
 
 ### Setup python virtual env
+* sudo apt-get install libmysqlclient-dev python-tk python-dev python-virtualenv
 * Create virtual env: `virtualenv irassh-env` if not installed yet
 * Init this env: `source irassh-env/bin/activate`
 * Install python requirements: `pip install -r requirements.txt`
+* pip install --upgrade tensorflow
 
 ## New features
 * Add action to playlog

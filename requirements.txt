@@ -20,3 +20,5 @@ MySQL-python
 numpy
 keras
 h5py
+pandas
+cvxopt
