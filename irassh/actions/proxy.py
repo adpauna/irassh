@@ -1,3 +1,5 @@
+import fcntl
+import signal
 import os
 import random
 import time
@@ -201,22 +203,29 @@ class ConstActionGenerator(ActionGenerator):
 
 class FileActionGenerator(ActionGenerator):
     def __init__(self, file):
-        self.file = file
+        self.action_folder = "manual/control"
+        self.cmd_file = "manual/input/cmd.p"
+        self.action = -1
+
+    def change_handler(signum, frame):
+        with open(self.action_folder + "/receive-action.p", "rb") as af:
+            self.action = pickle.load(af)
 
     def generate(self):
         cmd_log.append(rl_state.current_command)
-        with open("cmd_log.p","wb") as f:
+        with open(self.cmd_file, "wb") as f:
             pickle.dump(cmd_log, f, protocol=0)
-        action = -1
-        while action==-1:
-            if os.path.isfile(self.file):
-                with open(self.file,"rb") as f:
-                    action = pickle.load(f)
-            if action==-1:
-                time.sleep(0.5)
-        with open(self.file,"wb") as f:
-            pickle.dump(-1, f)
-        return action
+
+        # listen for new action
+        signal.signal(signal.SIGIO, self.change_handler)
+        fd = os.open(self.action_folder, os.O_RDONLY)
+        fcntl.fcntl(fd, fcntl.F_SETSIG, 0)
+        fcntl.fcntl(fd, fcntl.F_NOTIFY, fcntl.DN_MODIFY)
+
+        while True and self.action != -1:
+            time.sleep(1000)
+
+        return self.action
 
 class ActionFactory(object):
 
