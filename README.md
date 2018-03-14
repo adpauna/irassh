@@ -46,6 +46,13 @@ For Python dependencies, see requirements.txt
 * Install python requirements: `pip install -r requirements.txt`
 * pip install --upgrade tensorflow
 
+### Test manual mode
+
+* Turn on manual = true in irassh/shell/honeypot.sh
+* Turn on server: bin/irassh start
+* Turn on manual console: python bin/manual
+* Connect to server: ssh root@localhost -p 2222
+
 ## New features
 * Add action to playlog
 * Add action mysql log
