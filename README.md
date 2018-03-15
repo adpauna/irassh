@@ -26,6 +26,7 @@ For Python dependencies, see requirements.txt
 * `bin/playlog` - utility to replay session logs
 
 ## How to run
+* Create 2 folders: log and log/tty
 * `bin/irassh start` - start the server
 * `bin/irassh stop` - stop the server
 * Start client: `ssh root@localhost -p 2222`, input any pwd
@@ -44,7 +45,6 @@ For Python dependencies, see requirements.txt
 * Create virtual env: `virtualenv irassh-env` if not installed yet
 * Init this env: `source irassh-env/bin/activate`
 * Install python requirements: `pip install -r requirements.txt`
-* pip install --upgrade tensorflow
 
 ### Test manual mode
 

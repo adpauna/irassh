@@ -29,18 +29,17 @@ def handler(signum, frame):
     if action > -1 and action < 5:
         with open(action_file, "wb") as af:
             pickle.dump(action, af)
-        print("Waiting for new command...")
     else:
         print("Action number is incorrect")
         action = input(message)
         action = int(action)
 
-print("Waiting for new command...")
-
-signal.signal(signal.SIGIO, handler)
-fd = os.open(input_cmd_folder, os.O_RDONLY)
-fcntl.fcntl(fd, fcntl.F_SETSIG, 0)
-fcntl.fcntl(fd, fcntl.F_NOTIFY, fcntl.DN_MODIFY)
-
 while True:
+    print("Waiting for new command...")
+
+    signal.signal(signal.SIGIO, handler)
+    fd = os.open(input_cmd_folder, os.O_RDONLY)
+    fcntl.fcntl(fd, fcntl.F_SETSIG, 0)
+    fcntl.fcntl(fd, fcntl.F_NOTIFY, fcntl.DN_MODIFY)
+
     time.sleep(1000)
