@@ -25,10 +25,24 @@ def trainirlAgent_test():
         "cmd2number_reward": "cmd2number_reward.p",
         "GAMMA": 0.9  # Forgetting.
     }
-    randomPolicyFE = np.random.random_sample(sequence_length)
+    cmd2props = None
+    oneHot = False
+    if cmd2props is not None:
+        for cmd in cmd2props:
+            number_of_props = len(cmd2props[cmd])
+            break
+        #This needs to be generated in manual.py
+        expertPolicyFE = np.random.random_sample((sequence_length, number_of_props))
+    elif oneHot:
+        cmd2number_reward = pickle.load(open(params["cmd2number_reward"], "rb"))
+        #This needs to be generated in manual.py
+        expertPolicyFE = np.random.random_sample((sequence_length, len(cmd2number_reward)))
+    else:
+        #This needs to be generated in manual.py
+        expertPolicyFE = np.random.random_sample(sequence_length)
 
-    #This need to be generated in manual.py
-    expertPolicyFE = np.random.random_sample(sequence_length)
+    randomPolicyFE = np.random.random_sample(expertPolicyFE.shape)
+
 
     irl_agent = irlAgent(params, randomPolicyFE, expertPolicyFE, num_frames=1100, behavior="DefaultPolicy")
     rawcmd = ""
@@ -38,9 +52,10 @@ def trainirlAgent_test():
 
 
 class irlAgent:
-    def __init__(self, params, randomFE, expertFE, epsilon=0.1, num_frames=5000, behavior="DefaultPolicy", play_commands=2000):
+    def __init__(self, params, randomFE, expertFE, epsilon=0.1, num_frames=5000, behavior="DefaultPolicy", play_commands=2000, cmd2props = None, oneHot = False):
         self.play_commands = play_commands
         self.params = params
+        self.oneHot = oneHot
 
         if isinstance(params["cmd2number_reward"], str):
             #if string load from file
@@ -58,6 +73,27 @@ class irlAgent:
         self.randomPolicy = randomFE
         self.expertPolicy = expertFE
         self.num_frames = num_frames
+
+        if cmd2props is not None:
+            self.cmd2props = dict()
+
+            self.number_of_props = 0
+            for cmd in self.cmd2number_reward:
+                cmd_num = self.cmd2number_reward[cmd][0]
+                self.cmd2props[cmd_num] = cmd2props[cmd]
+
+                if cmd =="exit":
+                    print(self.cmd2props[cmd_num])
+                self.number_of_props = len(cmd2props[cmd])
+            if 0 not in self.cmd2props:
+                if 0 in cmd2props:
+                    self.cmd2props[0] = cmd2props[0]
+                else:
+                    self.cmd2props[0] = np.zeros(self.number_of_props)
+        else:
+            self.cmd2props = None
+
+
         self.behavior = behavior
         self.epsilon = epsilon  # termination when t<0.1
         self.randomT = np.linalg.norm(
@@ -149,7 +185,18 @@ class irlAgent:
         action = (np.argmax(self.play_model.predict(state, batch_size=1)[0]))
 
         if self.play_cmds > 100:
-            self.play_featureExpectations += (self.play_GAMMA ** (self.play_cmds - 101)) * np.array(self.play_state)
+            if self.cmd2props is not None:
+                self.prop_state = np.zeros((self.sequence_length, self.number_of_props))
+                for i, cmd_num in enumerate(self.play_state):
+                    self.prop_state[i] = self.cmd2props[int(cmd_num)]
+                self.play_featureExpectations += (self.play_GAMMA ** (self.play_cmds - 101)) * self.prop_state
+            elif self.oneHot:
+                self.oneHot_state = np.zeros(self.play_featureExpectations.shape)
+                self.oneHot_state[np.arange(self.play_featureExpectations.shape[0]), self.play_state] = 1
+                self.play_featureExpectations += (self.play_GAMMA ** (self.play_cmds - 101)) * self.oneHot_state
+            else:
+                self.play_featureExpectations += (self.play_GAMMA ** (self.play_cmds - 101)) * self.play_state
+
         # print ("Feature Expectations :: ", featureExpectations)
         # Tell us something.
         return action
