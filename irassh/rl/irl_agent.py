@@ -203,7 +203,7 @@ class irlAgent:
 
 
     def play(self, model, weights, GAMMA):
-        self.play_state = np.zeros(self.sequence_length)
+        self.play_state = np.zeros(self.sequence_length, dtype=np.int32)
         self.play_state_index = 0
         self.play_featureExpectations = np.zeros(len(weights))
         self.play_cmds = 0
@@ -246,11 +246,9 @@ class irlAgent:
             if state_index < self.sequence_length:
                 state_index = state_index + 1
 
-
-            # 56 is the "exit" command
             if cmd == "exit":
                 # The state is reset
-                state = np.zeros(self.sequence_length)
+                state = np.zeros(self.sequence_length, dtype=np.int32)
                 state_index = 0
         else:
             # The state is a sequence of the last params["sequence_length"] commands given
