@@ -46,8 +46,7 @@ def trainManualLearner_test():
     while True:
         ML.log_cmd_resulted_from_action(cmd)
 
-def trainManualLearner_on_log(cmds):
-    sequence_length = 10
+def trainManualLearner_on_log(cmds, sequence_length = 10, cmd2prop=None, oneHot=False):
     nn_param = [128, 128]
     params = {
         "batchSize": 64,
@@ -59,7 +58,7 @@ def trainManualLearner_on_log(cmds):
         "GAMMA": 0.9  # Forgetting.
     }
 
-    ML = ManualLearner(params)
+    ML = ManualLearner(params, cmd2props=cmd2prop,oneHot=oneHot)
     for cmd in cmds:
         ML.log_cmd_resulted_from_action(cmd)
     return ML.featureExpectations
@@ -120,9 +119,6 @@ class ManualLearner:
             for cmd in self.cmd2number_reward:
                 cmd_num = self.cmd2number_reward[cmd][0]
                 self.cmd2props[cmd_num] = cmd2props[cmd]
-
-                if cmd =="exit":
-                    print(self.cmd2props[cmd_num])
                 self.number_of_props = len(cmd2props[cmd])
             if 0 not in self.cmd2props:
                 self.cmd2props[0] = np.zeros(self.number_of_props)
@@ -186,8 +182,8 @@ class ManualLearner:
             else:
                 self.featureExpectations += (GAMMA ** (self.cmds - 101)) * self.state
 
-        # Tell us something.
-        changePercentage = (np.linalg.norm(self.featureExpectations - self.Prev) * 100.0) / float(np.linalg.norm(self.featureExpectations))
+            # Tell us something.
+            changePercentage = (np.linalg.norm(self.featureExpectations - self.Prev) * 100.0) / float(np.linalg.norm(self.featureExpectations))
 
         self.Prev = np.array(self.featureExpectations)
 
@@ -198,4 +194,27 @@ class ManualLearner:
                 print(bcolors.WARNING + "Can't save policy.\n Make sure the 'policies' folder exists along with other neccesary folders" + bcolors.ENDC)
 
 if __name__ == "__main__":
-    trainManualLearner_test()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_file", help="pickle file that contains the log of commands")
+    parser.add_argument("output_file", help="output filename (will be a pickle file containing a policy")
+    parser.add_argument("sequence_length", help="number of commands that define a state", type=int,default=1)
+    parser.add_argument("-p","--use_properties", help="use properties representation",action="store_true")
+    parser.add_argument("-oh","--use_one_hot", help="use one hot representation",action="store_true")
+
+    args = parser.parse_args()
+    if (args.input_file == None or args.output_file == None):
+        parser.print_help()
+    else:
+        with open(args.input_file,"rb") as f:
+            cmd_log = pickle.load(f)
+        if args.use_parameters:
+            cmd2prop = get_cmd_prop()
+        else:
+            cmd2prop = None
+        fe = trainManualLearner_on_log(cmd_log, sequence_length=args.sequence_length, cmd2prop=cmd2prop, oneHot=args.use_one_hot)
+        print("Resulted Feature expectations:")
+        print(fe)
+        with open(args.output_file,"wb") as f:
+            pickle.dump(fe, f)
