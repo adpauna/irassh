@@ -209,7 +209,7 @@ if __name__ == "__main__":
     else:
         with open(args.input_file,"rb") as f:
             cmd_log = pickle.load(f)
-        if args.use_parameters:
+        if args.use_properties:
             cmd2prop = get_cmd_prop()
         else:
             cmd2prop = None
