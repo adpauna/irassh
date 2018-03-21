@@ -199,7 +199,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input_file", help="pickle file that contains the log of commands")
     parser.add_argument("output_file", help="output filename (will be a pickle file containing a policy")
-    parser.add_argument("sequence_length", help="number of commands that define a state", type=int,default=1)
     parser.add_argument("-p","--use_properties", help="use properties representation",action="store_true")
     parser.add_argument("-oh","--use_one_hot", help="use one hot representation",action="store_true")
 
@@ -213,8 +212,8 @@ if __name__ == "__main__":
             cmd2prop = get_cmd_prop()
         else:
             cmd2prop = None
-        fe = trainManualLearner_on_log(cmd_log, sequence_length=args.sequence_length, cmd2prop=cmd2prop, oneHot=args.use_one_hot)
+        fe = trainManualLearner_on_log(cmd_log, sequence_length=1, cmd2prop=cmd2prop, oneHot=args.use_one_hot)[0]
         print("Resulted Feature expectations:")
-        print(fe)
+        print("np.array("+str(fe).replace("  ",",")+")")
         with open(args.output_file,"wb") as f:
             pickle.dump(fe, f)
