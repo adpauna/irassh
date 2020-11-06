@@ -1,0 +1,38 @@
+version: '3'
+services:
+    mysql:
+        image: mysql:8
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_DATABASE: 'irassh'
+            MYSQL_USER: 'irassh'
+            MYSQL_PASSWORD: 'irassh'
+            MYSQL_ROOT_PASSWORD: 'irassh'
+        networks:
+            - backend
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_volume:/var/lib/mysql
+            - ./mysql/init:/docker-entrypoint-initdb.d
+
+    debian10irassh:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        networks:
+            - frontend
+            - backend
+        ports:
+                - "0.0.0.0:22:2222"
+        depends_on: 
+            - mysql
+
+volumes:
+    mysql_volume:
+
+networks:
+    frontend:
+        internal: false
+    backend:
+        internal: true

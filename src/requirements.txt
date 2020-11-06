@@ -1,0 +1,25 @@
+twisted==17.1.0
+cryptography>=0.9.1
+configparser
+pyopenssl==18.0.0
+pyparsing
+packaging
+appdirs>=1.4.0
+pyasn1_modules
+attrs
+service_identity
+python-dateutil
+tftpy
+pybrain
+pygeoip
+matplotlib
+scipy
+pyasn1
+pycrypto
+mysqlclient==1.4.0 #MySQL-python
+numpy
+keras==2.1.5
+h5py
+pandas
+cvxopt
+tensorflow==1.6
