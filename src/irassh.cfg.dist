@@ -414,7 +414,7 @@ format = text
 # MySQL logging requires an extra Python module: pip install mysql-python
 #
 [output_mysql]
-host = localhost
+host = mysql
 database = irassh
 username = irassh
 password = irassh
