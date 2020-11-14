@@ -12,7 +12,9 @@ python-dateutil
 tftpy
 pybrain
 pygeoip
-matplotlib
+# matplotlib
+# arrow==0.12.0 
+# backports.functools-lru-cache==1.2.1
 scipy
 pyasn1
 pycrypto
