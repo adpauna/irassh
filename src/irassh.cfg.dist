@@ -20,7 +20,7 @@
 # environment
 #
 # (default: svr04)
-hostname = svr04
+hostname = fh02prx02
 
 
 # Directory where to save log files in.
