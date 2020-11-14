@@ -16,3 +16,4 @@ twisted/plugins/dropin.cache
 .DS_Store
 _trial_temp
 harsh_restart.sh
+.vscode/
