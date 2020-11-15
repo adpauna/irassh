@@ -33,7 +33,7 @@ else:
 
 
 manual = False
-use_irl= False
+use_irl= True
 
 class HoneyPotCommand(object):
     """
