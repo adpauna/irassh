@@ -2,7 +2,7 @@ FROM debian:10
 
 
 RUN apt-get -y update
-RUN apt-get -y install python2 python-virtualenv python-pip python2-dev build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev wget libmariadb-dev-compat default-libmysqlclient-dev ssh python-tk # libmysqlclient-dev python-openssl mysql-client gcc 
+RUN apt-get -y install python2 python-virtualenv python-pip python2-dev build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev wget libmariadb-dev-compat default-libmysqlclient-dev ssh python-tk gcc vim byobu
 # python-backports.functools-lru-cache 
 # python-matplotlib
 
@@ -45,6 +45,6 @@ RUN pip2 install backports.functools_lru_cache==1.2.1
 
 RUN mkdir -p log && mkdir -p log/tty
 # run irassh as user irassh
-CMD ["bin/irassh", "start"]
-# CMD ["tail", "-f", "/dev/null"]
+# CMD ["bin/irassh", "start"]
+CMD ["tail", "-f", "/dev/null"]
 
