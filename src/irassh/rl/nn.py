@@ -23,7 +23,7 @@ def neural_net(input_length,number_of_actions, params, load=''):
     model = Sequential()
 
     # First layer.
-    model.add(Embedding(100, 32, input_length=input_length))
+    model.add(Embedding(250, 64, input_length=input_length))
     if input_length==1:
         model.add(Dense(params[0], init='lecun_uniform'))
         model.add(Activation('relu'))

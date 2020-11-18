@@ -159,7 +159,7 @@ def playing_test(params):
 
 class q_learner:
     def __init__(self, params, load_replay_file=None, save_replay_file_prefix="replay",
-                 save_model_file_prefix="saved-models/", save_every=500, end_value=-500):
+                 save_model_file_prefix="/usr/src/irassh/irassh/rl/saved-models/", save_every=500, end_value=-500):
         # This where the input values are saved so they can be used in other functions whithin the class
 
         self.params = params
@@ -273,10 +273,13 @@ class q_learner:
         # Choose an action.
         if random.random() < self.epsilon or self.t < self.observe:
             action = np.random.randint(0, self.number_of_actions)  # random
+            print('random action: ' + str(action))
         else:
             # Get Q values for each action.
             qval = self.model.predict(state, batch_size=1)
             action = (np.argmax(qval))  # best
+            print('qvals training: ' + str(qval))
+            print('q-learning action: ' + str(action))
         self.lastAction = action
         return action
 
@@ -285,6 +288,8 @@ class q_learner:
             state = np.expand_dims(state, axis=0)
         qval = self.model.predict(state, batch_size=1)
         action = (np.argmax(qval))
+        print('qvals after training: ' + str(qval)
+        print('q-learning action: ' + str(action))
         return action
 
     def update_replay(self, reward, new_state, action=None):
@@ -317,15 +322,15 @@ class q_learner:
             if self.t % self.save_every == 0:
                 if len(self.data_collect) > 50:
                     # Save the results to a file so we can graph it later.
-                    learn_f = 'results/command-frames/learn_data-' + self.filename + '.csv'
-                    with open(learn_f, 'w', newline='') as data_dump:
+                    learn_f = '/usr/src/irassh/irassh/rl/results/command-frames/learn_data-' + self.filename + '.csv'
+                    with open(learn_f, 'wb') as data_dump:
                         wr = csv.writer(data_dump)
                         wr.writerows(self.data_collect)
                     plotting.plot_file(learn_f, 'learn')
 
                 if len(self.loss_log) > 500:
-                    loss_f = 'results/command-frames/loss_data-' + self.filename + '.csv'
-                    with open(loss_f, 'w', newline='') as lf:
+                    loss_f = '/usr/src/irassh/irassh/rl/results/command-frames/loss_data-' + self.filename + '.csv'
+                    with open(loss_f, 'wb') as lf:
                         wr = csv.writer(lf)
                         for loss_item in self.loss_log:
                             wr.writerow(loss_item)
@@ -364,7 +369,7 @@ class q_learner:
 
         # Save the model every 25,000 frames.
         if self.t % self.save_every == 0:
-            pickle._dump(self.replay, open(self.save_replay_file_prefix + "-" + str(self.t), "wb"))
+            pickle.dump(self.replay, open(self.save_replay_file_prefix + "-" + str(self.t), "wb"))
             model_save_filename = self.save_model_file_prefix + self.filename + '-' + str(self.t) + '.h5'
             self.model.save_weights(model_save_filename,
                                     overwrite=True)
