@@ -288,7 +288,7 @@ class q_learner:
             state = np.expand_dims(state, axis=0)
         qval = self.model.predict(state, batch_size=1)
         action = (np.argmax(qval))
-        print('qvals after training: ' + str(qval)
+        print('qvals after training: ' + str(qval))
         print('q-learning action: ' + str(action))
         return action
 
