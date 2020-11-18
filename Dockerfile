@@ -45,6 +45,6 @@ RUN pip2 install backports.functools_lru_cache==1.2.1
 
 RUN mkdir -p log && mkdir -p log/tty
 # run irassh as user irassh
-# CMD ["bin/irassh", "start"]
-CMD ["tail", "-f", "/dev/null"]
+CMD ["bin/irassh", "start"]
+# CMD ["tail", "-f", "/dev/null"]
 
