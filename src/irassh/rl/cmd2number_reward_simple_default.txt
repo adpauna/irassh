@@ -1,0 +1,990 @@
+{
+  "inspy": [
+    34, 
+    0
+  ], 
+  "busybox": [
+    194, 
+    0
+  ], 
+  "ddrescue": [
+    143, 
+    0
+  ], 
+  "lscpu": [
+    236, 
+    0
+  ], 
+  "oscanner": [
+    77, 
+    0
+  ], 
+  "aireplay-ng": [
+    96, 
+    0
+  ], 
+  "osrframework": [
+    45, 
+    0
+  ], 
+  "kalibrate-rtl": [
+    116, 
+    0
+  ], 
+  "packetforge-ng": [
+    124, 
+    0
+  ], 
+  "cisco-global-exploiter": [
+    70, 
+    0
+  ], 
+  "sleep": [
+    215, 
+    0
+  ], 
+  "dnmap": [
+    14, 
+    0
+  ], 
+  "maltego": [
+    38, 
+    0
+  ], 
+  "cisco-auditing-tool": [
+    69, 
+    0
+  ], 
+  "smbmap": [
+    50, 
+    0
+  ], 
+  "arachni": [
+    158, 
+    0
+  ], 
+  "mfterm": [
+    122, 
+    0
+  ], 
+  "uniscan": [
+    175, 
+    0
+  ], 
+  "sparta": [
+    53, 
+    0
+  ], 
+  "ulimit": [
+    230, 
+    0
+  ], 
+  "hexorbase": [
+    72, 
+    0
+  ], 
+  "ivstools": [
+    115, 
+    0
+  ], 
+  "extundelete": [
+    147, 
+    0
+  ], 
+  "sqlninja": [
+    82, 
+    0
+  ], 
+  "mdk3": [
+    120, 
+    0
+  ], 
+  "grabber": [
+    168, 
+    0
+  ], 
+  "envo": [
+    197, 
+    0
+  ], 
+  "ls": [
+    206, 
+    0
+  ], 
+  "casefile": [
+    8, 
+    0
+  ], 
+  "dnstracer": [
+    18, 
+    0
+  ], 
+  "enumiax": [
+    22, 
+    0
+  ], 
+  "exit": [
+    246, 
+    -500
+  ], 
+  "wpaclean": [
+    136, 
+    0
+  ], 
+  "ethtool": [
+    198, 
+    0
+  ], 
+  "p0f": [
+    46, 
+    0
+  ], 
+  "easside-ng": [
+    108, 
+    0
+  ], 
+  "eapmd5pass": [
+    107, 
+    0
+  ], 
+  "wifite": [
+    135, 
+    0
+  ], 
+  "gr-scan": [
+    113, 
+    0
+  ], 
+  "chntpw": [
+    140, 
+    0
+  ], 
+  "w3af": [
+    177, 
+    0
+  ], 
+  "foremost": [
+    148, 
+    0
+  ], 
+  "smtp-user-enum": [
+    51, 
+    0
+  ], 
+  "bulk-extractor": [
+    138, 
+    0
+  ], 
+  "tnscmd10g": [
+    84, 
+    0
+  ], 
+  "ssh": [
+    216, 
+    500
+  ], 
+  "base": [
+    193, 
+    0
+  ], 
+  "cookie-cadger": [
+    11, 
+    0
+  ], 
+  "fern": [
+    109, 
+    0
+  ], 
+  "bbqsql": [
+    67, 
+    0
+  ], 
+  "volatility": [
+    156, 
+    0
+  ], 
+  "wpscan": [
+    183, 
+    0
+  ], 
+  "uname": [
+    220, 
+    0
+  ], 
+  "vim": [
+    243, 
+    0
+  ], 
+  "ismtp": [
+    36, 
+    0
+  ], 
+  "goofile": [
+    31, 
+    0
+  ], 
+  "getconf": [
+    233, 
+    0
+  ], 
+  "websploit": [
+    181, 
+    0
+  ], 
+  "makeivs-ng": [
+    119, 
+    0
+  ], 
+  "xsser": [
+    184, 
+    0
+  ], 
+  "locate": [
+    235, 
+    0
+  ], 
+  "bluepot": [
+    102, 
+    0
+  ], 
+  "set": [
+    49, 
+    0
+  ], 
+  "aircrack-ng": [
+    94, 
+    0
+  ], 
+  "dnsrecon": [
+    17, 
+    0
+  ], 
+  "adduser": [
+    191, 
+    0
+  ], 
+  "pdgmail": [
+    153, 
+    0
+  ], 
+  "killall": [
+    234, 
+    0
+  ], 
+  "crackle": [
+    90, 
+    0
+  ], 
+  "cutycapt": [
+    161, 
+    0
+  ], 
+  "ifconfig": [
+    203, 
+    0
+  ], 
+  "wol-e": [
+    65, 
+    0
+  ], 
+  "zaproxy": [
+    185, 
+    0
+  ], 
+  "blueranger": [
+    103, 
+    0
+  ], 
+  "sslstrip": [
+    56, 
+    0
+  ], 
+  "peepdf": [
+    154, 
+    0
+  ], 
+  "multimon-ng": [
+    123, 
+    0
+  ], 
+  "intrace": [
+    35, 
+    0
+  ], 
+  "openvas": [
+    76, 
+    0
+  ], 
+  "nano": [
+    238, 
+    0
+  ], 
+  "bluesnarfer": [
+    104, 
+    0
+  ], 
+  "cisco-torch": [
+    10, 
+    0
+  ], 
+  "kismet": [
+    118, 
+    0
+  ], 
+  "sslsplit": [
+    55, 
+    0
+  ], 
+  "pdfid": [
+    152, 
+    0
+  ], 
+  "cisco-ocs": [
+    71, 
+    0
+  ], 
+  "siparmyknife": [
+    80, 
+    0
+  ], 
+  "plecost": [
+    172, 
+    0
+  ], 
+  "sqlsus": [
+    83, 
+    0
+  ], 
+  "wireshark": [
+    64, 
+    0
+  ], 
+  "sqlmap": [
+    81, 
+    0
+  ], 
+  "termineter": [
+    190, 
+    0
+  ], 
+  "bully": [
+    105, 
+    0
+  ], 
+  "copy-router-config": [
+    12, 
+    0
+  ], 
+  "reaver": [
+    127, 
+    0
+  ], 
+  "distorm3": [
+    145, 
+    0
+  ], 
+  "webshag": [
+    179, 
+    0
+  ], 
+  "free": [
+    199, 
+    0
+  ], 
+  "dirbuster": [
+    165, 
+    0
+  ], 
+  "lynis": [
+    74, 
+    0
+  ], 
+  "dirb": [
+    164, 
+    0
+  ], 
+  "dnsmap": [
+    16, 
+    0
+  ], 
+  "burp": [
+    160, 
+    0
+  ], 
+  "jboss-autopwn": [
+    92, 
+    0
+  ], 
+  "wget": [
+    222, 
+    500
+  ], 
+  "binwalk": [
+    137, 
+    0
+  ], 
+  "last": [
+    205, 
+    0
+  ], 
+  "service": [
+    214, 
+    0
+  ], 
+  "cuckoo": [
+    141, 
+    0
+  ], 
+  "iaxflood": [
+    186, 
+    0
+  ], 
+  "pyrit": [
+    126, 
+    0
+  ], 
+  "xplico": [
+    66, 
+    0
+  ], 
+  "hostapd-wpe": [
+    114, 
+    0
+  ], 
+  "braa": [
+    7, 
+    0
+  ], 
+  "metagoofil": [
+    40, 
+    0
+  ], 
+  "commix": [
+    89, 
+    0
+  ], 
+  "airserv-ng": [
+    100, 
+    0
+  ], 
+  "unknown": [
+    247, 
+    0
+  ], 
+  "yersinia": [
+    86, 
+    0
+  ], 
+  "theharvester": [
+    60, 
+    0
+  ], 
+  "tftp": [
+    219, 
+    500
+  ], 
+  "slowhttptest": [
+    189, 
+    0
+  ], 
+  "ident-user-enum": [
+    33, 
+    0
+  ], 
+  "vipw": [
+    244, 
+    0
+  ], 
+  "pkill": [
+    240, 
+    0
+  ], 
+  "nmap": [
+    43, 
+    0
+  ], 
+  "sslcaudit": [
+    54, 
+    0
+  ], 
+  "ipv6-toolkit": [
+    188, 
+    0
+  ], 
+  "apt": [
+    192, 
+    0
+  ], 
+  "firewalk": [
+    26, 
+    0
+  ], 
+  "armitage": [
+    87, 
+    0
+  ], 
+  "pixiewps": [
+    125, 
+    0
+  ], 
+  "faraday": [
+    24, 
+    0
+  ], 
+  "perl": [
+    210, 
+    0
+  ], 
+  "davtest": [
+    162, 
+    0
+  ], 
+  "eyewitness": [
+    23, 
+    0
+  ], 
+  "tar": [
+    218, 
+    0
+  ], 
+  "beef": [
+    88, 
+    0
+  ], 
+  "guymager": [
+    150, 
+    0
+  ], 
+  "twofi": [
+    62, 
+    0
+  ], 
+  "wifitap": [
+    134, 
+    0
+  ], 
+  "top": [
+    241, 
+    0
+  ], 
+  "ua-tester": [
+    174, 
+    0
+  ], 
+  "webscarab": [
+    178, 
+    0
+  ], 
+  "emacs": [
+    232, 
+    0
+  ], 
+  "pdf-parser": [
+    151, 
+    0
+  ], 
+  "spooftooph": [
+    130, 
+    0
+  ], 
+  "dff": [
+    144, 
+    0
+  ], 
+  "sublist3r": [
+    58, 
+    0
+  ], 
+  "automater": [
+    5, 
+    0
+  ], 
+  "mfoc": [
+    121, 
+    0
+  ], 
+  "arp-scan": [
+    4, 
+    0
+  ], 
+  "ohrwurm": [
+    75, 
+    0
+  ], 
+  "inviteflood": [
+    187, 
+    0
+  ], 
+  "sync": [
+    229, 
+    0
+  ], 
+  "snmp-check": [
+    52, 
+    0
+  ], 
+  "galleta": [
+    149, 
+    0
+  ], 
+  "hurl": [
+    169, 
+    0
+  ], 
+  "cdpsnarf": [
+    9, 
+    0
+  ], 
+  "dc3dd": [
+    142, 
+    0
+  ], 
+  "dotdotpwn": [
+    20, 
+    0
+  ], 
+  "proxystrike": [
+    173, 
+    0
+  ], 
+  "mount": [
+    227, 
+    500
+  ], 
+  "thc-ipv6": [
+    59, 
+    0
+  ], 
+  "bed": [
+    68, 
+    0
+  ], 
+  "netstat": [
+    208, 
+    0
+  ], 
+  "vega": [
+    176, 
+    0
+  ], 
+  "stty": [
+    228, 
+    0
+  ], 
+  "giskismet": [
+    111, 
+    0
+  ], 
+  "wesside-ng": [
+    132, 
+    0
+  ], 
+  "exploitdb": [
+    91, 
+    0
+  ], 
+  "dmitry": [
+    13, 
+    0
+  ], 
+  "padbuster": [
+    171, 
+    0
+  ], 
+  "ftpget": [
+    201, 
+    500
+  ], 
+  "iptables": [
+    204, 
+    0
+  ], 
+  "funkload": [
+    166, 
+    0
+  ], 
+  "ace-voip": [
+    2, 
+    0
+  ], 
+  "hping3": [
+    32, 
+    0
+  ], 
+  "gqrx": [
+    112, 
+    0
+  ], 
+  "masscan": [
+    39, 
+    0
+  ], 
+  "vi": [
+    242, 
+    0
+  ], 
+  "sudo": [
+    217, 
+    0
+  ], 
+  "parsero": [
+    47, 
+    0
+  ], 
+  "deblaze": [
+    163, 
+    0
+  ], 
+  "fragroute": [
+    27, 
+    0
+  ], 
+  "enable": [
+    226, 
+    0
+  ], 
+  "sidguesser": [
+    79, 
+    0
+  ], 
+  "lbd": [
+    37, 
+    0
+  ], 
+  "airdecap-ng": [
+    95, 
+    0
+  ], 
+  "sfuzz": [
+    78, 
+    0
+  ], 
+  "df": [
+    224, 
+    0
+  ], 
+  "dnswalk": [
+    19, 
+    0
+  ], 
+  "curl": [
+    195, 
+    500
+  ], 
+  "rtlsdr": [
+    129, 
+    0
+  ], 
+  "airolib-ng": [
+    99, 
+    0
+  ], 
+  "asleap": [
+    101, 
+    0
+  ], 
+  "gcc": [
+    202, 
+    0
+  ], 
+  "enum4linux": [
+    21, 
+    0
+  ], 
+  "joomscan": [
+    170, 
+    0
+  ], 
+  "airmon-ng": [
+    97, 
+    0
+  ], 
+  "regripper": [
+    155, 
+    0
+  ], 
+  "inguma": [
+    73, 
+    0
+  ], 
+  "tlssled": [
+    61, 
+    0
+  ], 
+  "nc": [
+    207, 
+    500
+  ], 
+  "ping": [
+    211, 
+    0
+  ], 
+  "cowpatty": [
+    106, 
+    0
+  ], 
+  "nbtscan-unixwiz": [
+    42, 
+    0
+  ], 
+  "golismero": [
+    30, 
+    0
+  ], 
+  "python": [
+    212, 
+    0
+  ], 
+  "pico": [
+    239, 
+    0
+  ], 
+  "dnsenum": [
+    15, 
+    0
+  ], 
+  "which": [
+    223, 
+    0
+  ], 
+  "capstone": [
+    139, 
+    0
+  ], 
+  "dd": [
+    196, 
+    0
+  ], 
+  "dumpzilla": [
+    146, 
+    0
+  ], 
+  "acccheck": [
+    1, 
+    0
+  ], 
+  "fs": [
+    200, 
+    0
+  ], 
+  "wfuzz": [
+    182, 
+    0
+  ], 
+  "bing-ip2hosts": [
+    6, 
+    0
+  ], 
+  "ntop": [
+    44, 
+    0
+  ], 
+  "uptime": [
+    221, 
+    0
+  ], 
+  "nohup": [
+    209, 
+    0
+  ], 
+  "killerbee": [
+    117, 
+    0
+  ], 
+  "amap": [
+    3, 
+    0
+  ], 
+  "unix-privesc-check": [
+    85, 
+    0
+  ], 
+  "miranda": [
+    41, 
+    0
+  ], 
+  "fierce": [
+    25, 
+    0
+  ], 
+  "webslayer": [
+    180, 
+    0
+  ], 
+  "blindelephant": [
+    159, 
+    0
+  ], 
+  "apache-users": [
+    157, 
+    0
+  ], 
+  "recon-ng": [
+    48, 
+    0
+  ], 
+  "metasploit": [
+    93, 
+    0
+  ], 
+  "dmesg": [
+    225, 
+    0
+  ], 
+  "sslyze": [
+    57, 
+    0
+  ], 
+  "wifiphisher": [
+    133, 
+    0
+  ], 
+  "redfang": [
+    128, 
+    0
+  ], 
+  "fragrouter": [
+    28, 
+    0
+  ], 
+  "clear": [
+    231, 
+    0
+  ], 
+  "scp": [
+    213, 
+    500
+  ], 
+  "ghost-phisher": [
+    29, 
+    0
+  ], 
+  "sftp": [
+    245, 
+    500
+  ], 
+  "gobuster": [
+    167, 
+    0
+  ], 
+  "urlcrazy": [
+    63, 
+    0
+  ], 
+  "tkiptun-ng": [
+    131, 
+    0
+  ], 
+  "airodump-ng-oui-update": [
+    98, 
+    0
+  ], 
+  "make": [
+    237, 
+    0
+  ], 
+  "freeradius-wpe": [
+    110, 
+    0
+  ]
+}

@@ -19,7 +19,7 @@ params = {
     "nn": nn_param,
     "sequence_length": 10, # The number of commands that make of a state
     "number_of_actions": 5,
-    "cmd2number_reward": "Commands.xlsx",
+    "cmd2number_reward": "cmd2number_reward.p",
     "GAMMA" :  0.9  # Forgetting.
 }
 
