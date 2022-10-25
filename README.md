@@ -46,7 +46,7 @@ For Python dependencies, see requirements.txt
 
 ## How to setup
 
-Just run sudo docker-compose build && sudo docker-compose up
+Just run sudo docker-compose build && sudo docker-compose up -d
 
 ### Test manual mode
 
