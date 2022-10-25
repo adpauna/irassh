@@ -4,3 +4,6 @@ root:x:*
 richard:x:*
 richard:x:fout
 admin:x:*
+ubuntu:x:*
+debian:x:*
+user:x:*
