@@ -271,6 +271,8 @@ class q_learner:
         self.hacker_cmds += 1
 
         # Choose an action.
+        print('self.t: ' + str(self.t))
+        print('self.epsilon: ' + str(self.epsilon))
         if random.random() < self.epsilon or self.t < self.observe:
             action = np.random.randint(0, self.number_of_actions)  # random
             print('random action: ' + str(action))
