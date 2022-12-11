@@ -7,7 +7,8 @@ pyparsing
 packaging
 appdirs>=1.4.0
 pyasn1_modules
-attrs
+attrs==19.2.0
+automat==20.2.0
 service_identity
 python-dateutil
 tftpy
@@ -17,11 +18,11 @@ xlrd
 # matplotlib
 # arrow==0.12.0 
 # backports.functools-lru-cache==1.2.1
-scipy
+scipy==1.1.0
 pyasn1
 pycrypto
 mysqlclient==1.4.0 #MySQL-python
-numpy
+numpy==1.15.0
 keras==2.1.5
 h5py
 pandas
