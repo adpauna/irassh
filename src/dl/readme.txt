@@ -1,0 +1,1 @@
+this directory contains files downloaded by attackers to the honeypot
